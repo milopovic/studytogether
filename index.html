@@ -584,20 +584,22 @@ async function createRoom() {
 
   if (participantError) {
     console.error(participantError);
-    alert("The room was created, but we couldn't add you to it ♡");
+    alert("Room created, but we couldn't add you ♡");
     return;
   }
 
- const roomUrl =
-  window.location.origin +
-  window.location.pathname +
-  "?room=" +
-  roomCode;
+  const roomUrl =
+    window.location.origin +
+    window.location.pathname +
+    "?room=" +
+    roomCode;
 
-console.log("ROOM CREATED:", roomCode);
-console.log("ROOM URL:", roomUrl);
+  document.querySelector(".room-name").textContent =
+    `room ${roomCode} ✦`;
 
-alert("Room created ♡\n\n" + roomUrl);
+  alert(
+    `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${roomUrl}\n\nCopy the link from this message and send it to your friend!`
+  );
 }
   
   async function joinRoomFromLink() {
@@ -660,7 +662,7 @@ alert("Room created ♡\n\n" + roomUrl);
 <script>
   const SUPABASE_URL = "https://iiiozzkiguawjnfjwufm.supabase.co";
 
-  const SUPABASE_KEY = "sb_publishable_M9cPuA11Q8-Fh0UAczdT-Q_OgAcMQBz";
+ const SUPABASE_KEY = "MY_KEY";
 
   const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
