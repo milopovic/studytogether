@@ -530,5 +530,21 @@ updateDisplay();
 
 </script>
 
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://iiiozzkiguawjnfjwufm.supabase.co/rest/v1/";
+
+  const SUPABASE_KEY = "sb_publishable_M9cPuA11Q8-Fh0UAczdT-Q_OgAcMQBz";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  console.log("StudyTogether connected to Supabase ♡");
+</script>
+
 </body>
 </html>
