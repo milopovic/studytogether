@@ -61,7 +61,16 @@
       font-size: 13px;
       opacity: .7;
     }
+.room-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
+.room-controls button {
+  font-size: 11px;
+  padding: 8px 14px;
+}
     main {
       display: flex;
       flex-direction: column;
@@ -299,10 +308,14 @@
 
 <div class="page">
 
-  <header>
-    <div class="logo">studytogether ♡</div>
+<header>
+  <div class="logo">studytogether ♡</div>
+
+  <div class="room-controls">
     <div class="room-name">psychology study room ✦</div>
-  </header>
+    <button onclick="createRoom()">create room ♡</button>
+  </div>
+</header>
 
   <main>
 
@@ -527,7 +540,44 @@ function customizeTimer() {
 }
 
 updateDisplay();
+async function createRoom() {
 
+  const roomCode = Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase();
+
+  const { data, error } = await supabase
+    .from("rooms")
+    .insert([
+      {
+        room_code: roomCode,
+        focus_minutes: focusMinutes,
+        break_minutes: breakMinutes,
+        timer_mode: "focus",
+        time_left: focusMinutes * 60
+      }
+    ])
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    alert("Something went wrong creating the room ♡");
+    return;
+  }
+
+  const roomUrl =
+    window.location.origin +
+    window.location.pathname +
+    "?room=" +
+    roomCode;
+
+  prompt(
+    "Your study room is ready ♡ Send this link to your friend:",
+    roomUrl
+  );
+}
 </script>
 
 <!-- Supabase -->
