@@ -599,10 +599,9 @@ async function createRoom() {
 
 const inviteLink = roomUrl;
 
-navigator.clipboard.writeText(inviteLink).catch(() => {});
-
-alert(
-  `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${inviteLink}\n\nThe invite link was copied to your clipboard!`
+const copyLink = prompt(
+  `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${inviteLink}\n\nCopy the link below and send it to your friend:`,
+  inviteLink
 );
     }
   
