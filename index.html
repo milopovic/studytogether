@@ -320,22 +320,23 @@
   <main>
 
     <section class="video-area">
+<div class="video-card">
 
-      <div class="video-card">
-        <div class="video-placeholder">
-          <span>♡</span>
-          <p>you</p>
-        </div>
-        <div class="name">you ♡</div>
-      </div>
+  <video
+    id="localVideo"
+    autoplay
+    muted
+    playsinline
+  ></video>
 
-      <div class="video-card">
-        <div class="video-placeholder">
-          <span>✦</span>
-          <p>waiting...</p>
-        </div>
-        <div class="name">your study buddy</div>
-      </div>
+  <div class="name">you ♡</div>
+
+  <div class="video-controls">
+    <button onclick="toggleMic()">🎙️</button>
+    <button onclick="toggleCamera()">📷</button>
+  </div>
+
+</div>
 
     </section>
 
@@ -686,6 +687,48 @@ if (existingName && existingRoom === roomCode.toUpperCase()) {
 
   console.log("StudyTogether connected to Supabase ♡");
   joinRoomFromLink();
+  let localStream;
+let micOn = true;
+let cameraOn = true;
+
+async function startCamera() {
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true
+    });
+
+    document.getElementById("localVideo").srcObject = localStream;
+
+  } catch (error) {
+    console.error("Camera error:", error);
+    alert("We couldn't access your camera ♡ Please allow camera and microphone access.");
+  }
+}
+
+function toggleMic() {
+  if (!localStream) return;
+
+  const audioTrack = localStream.getAudioTracks()[0];
+
+  if (audioTrack) {
+    micOn = !micOn;
+    audioTrack.enabled = micOn;
+  }
+}
+
+function toggleCamera() {
+  if (!localStream) return;
+
+  const videoTrack = localStream.getVideoTracks()[0];
+
+  if (videoTrack) {
+    cameraOn = !cameraOn;
+    videoTrack.enabled = cameraOn;
+  }
+}
+
+startCamera();
   
 </script>
 
