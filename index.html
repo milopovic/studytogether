@@ -547,7 +547,7 @@ async function createRoom() {
     .substring(2, 8)
     .toUpperCase();
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("rooms")
     .insert([
       {
@@ -584,11 +584,11 @@ async function createRoom() {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  const SUPABASE_URL = "https://iiiozzkiguawjnfjwufm.supabase.co/rest/v1/";
+  const SUPABASE_URL = "https://iiiozzkiguawjnfjwufm.supabase.co";
 
   const SUPABASE_KEY = "sb_publishable_M9cPuA11Q8-Fh0UAczdT-Q_OgAcMQBz";
 
-  const supabase = window.supabase.createClient(
+  const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
