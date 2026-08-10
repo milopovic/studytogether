@@ -588,13 +588,16 @@ async function createRoom() {
     return;
   }
 
-  const roomUrl =
-    window.location.origin +
-    window.location.pathname +
-    "?room=" +
-    roomCode;
+ const roomUrl =
+  window.location.origin +
+  window.location.pathname +
+  "?room=" +
+  roomCode;
 
-window.location.href = roomUrl;
+console.log("ROOM CREATED:", roomCode);
+console.log("ROOM URL:", roomUrl);
+
+alert("Room created ♡\n\n" + roomUrl);
 }
   
   async function joinRoomFromLink() {
