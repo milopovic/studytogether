@@ -596,7 +596,8 @@ async function createRoom() {
 
   document.querySelector(".room-name").textContent =
     `room ${roomCode} ✦`;
-
+sessionStorage.setItem("studyTogetherName", name.trim());
+sessionStorage.setItem("studyTogetherRoom", roomCode);
 const inviteLink = roomUrl;
 
 const copyLink = prompt(
@@ -624,7 +625,18 @@ const copyLink = prompt(
     alert("We couldn't find that study room ♡");
     return;
   }
+const existingName = sessionStorage.getItem("studyTogetherName");
+const existingRoom = sessionStorage.getItem("studyTogetherRoom");
 
+if (existingName && existingRoom === roomCode.toUpperCase()) {
+  document.querySelector(".room-name").textContent =
+    `room ${room.room_code} ✦`;
+
+  document.querySelector(".name").textContent =
+    `${existingName} ♡`;
+
+  return;
+}
   const name = prompt(
     "You've been invited to study together ♡\n\nWhat's your name?"
   );
