@@ -594,11 +594,10 @@ async function createRoom() {
     "?room=" +
     roomCode;
 
-  prompt(
-    "Your study room is ready ♡ Send this link to your friend:",
-    roomUrl
-  );
+ navigator.clipboard.writeText(roomUrl);
+window.location.href = roomUrl;
 }
+  
   async function joinRoomFromLink() {
 
   const params = new URLSearchParams(window.location.search);
@@ -651,7 +650,6 @@ async function createRoom() {
   alert(`Welcome to room ${room.room_code}, ${name.trim()} ♡`);
 }
 
-joinRoomFromLink();
 </script>
 
 <!-- Supabase -->
@@ -668,6 +666,8 @@ joinRoomFromLink();
   );
 
   console.log("StudyTogether connected to Supabase ♡");
+  joinRoomFromLink();
+  
 </script>
 
 </body>
