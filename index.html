@@ -597,10 +597,14 @@ async function createRoom() {
   document.querySelector(".room-name").textContent =
     `room ${roomCode} ✦`;
 
-  alert(
-    `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${roomUrl}\n\nCopy the link from this message and send it to your friend!`
-  );
-}
+const inviteLink = roomUrl;
+
+navigator.clipboard.writeText(inviteLink).catch(() => {});
+
+alert(
+  `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${inviteLink}\n\nThe invite link was copied to your clipboard!`
+);
+    }
   
   async function joinRoomFromLink() {
 
