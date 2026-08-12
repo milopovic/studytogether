@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
   --cream: #fffaf8;
   --text: #59444c;
   --soft: #f8dce5;
-  --white: rgba(255,255,255,.82);
+  --white: rgba(255,255,255,.84);
   --shadow: 0 12px 35px rgba(160,90,115,.12);
 }
 
@@ -32,6 +31,7 @@ body {
   min-height: 100vh;
   color: var(--text);
   font-family: "DM Sans", sans-serif;
+
   background:
     radial-gradient(circle at 10% 10%, #ffe1eb 0, transparent 25%),
     radial-gradient(circle at 90% 20%, #f9d5e2 0, transparent 25%),
@@ -39,8 +39,7 @@ body {
 }
 
 button,
-input,
-textarea {
+input {
   font: inherit;
 }
 
@@ -53,6 +52,7 @@ button {
   max-width: 1100px;
   margin: auto;
   padding: 35px 22px 15px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,9 +88,62 @@ button {
   padding: 10px 22px 50px;
 }
 
+/* INVITE */
+
+.invite-box {
+  display: none;
+  margin: 18px 0;
+  padding: 20px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #f0d4de;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.invite-box.visible {
+  display: block;
+}
+
+.invite-title {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 21px;
+}
+
+.invite-code {
+  font-size: 25px;
+  letter-spacing: 4px;
+  margin: 10px 0;
+  color: var(--dark-pink);
+}
+
+.invite-link {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #efd6de;
+  border-radius: 12px;
+  background: #fffafa;
+  margin-bottom: 9px;
+}
+
+.copy-btn {
+  background: var(--dark-pink);
+  color: white;
+  border-radius: 999px;
+  padding: 10px 17px;
+}
+
+/* PEOPLE */
+
+.people-count {
+  font-size: 13px;
+  opacity: .6;
+  margin: 18px 0 10px;
+}
+
 .video-area {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -113,12 +166,15 @@ button {
 
 .video-placeholder {
   height: 280px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   color: white;
   font-size: 18px;
+
   background:
     linear-gradient(145deg, #e7bdca, #d9a8b9);
 }
@@ -132,26 +188,34 @@ button {
   position: absolute;
   left: 16px;
   bottom: 14px;
+
   background: rgba(255,255,255,.82);
   padding: 8px 13px;
   border-radius: 999px;
+
   font-size: 13px;
+  z-index: 5;
 }
 
 .video-controls {
   position: absolute;
   right: 13px;
   bottom: 13px;
+
   display: flex;
   gap: 7px;
+
+  z-index: 5;
 }
 
 .video-controls button {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,.85);
+  background: rgba(255,255,255,.88);
 }
+
+/* TIMER */
 
 .timer-card,
 .card {
@@ -206,6 +270,8 @@ button {
   color: white;
 }
 
+/* BOTTOM */
+
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -224,37 +290,107 @@ button {
   margin-bottom: 18px;
 }
 
-.goal {
+/* GOALS */
+
+.goal-input {
   display: flex;
-  gap: 12px;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.goal-input input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #efd6de;
+  border-radius: 999px;
+  padding: 10px 14px;
+  outline: none;
+  background: white;
+}
+
+.goal-input button {
+  background: var(--dark-pink);
+  color: white;
+  border-radius: 999px;
+  padding: 9px 15px;
+}
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.goal-item {
+  display: flex;
   align-items: center;
+  gap: 9px;
+
+  padding: 10px 11px;
+  background: #fff1f5;
+  border-radius: 14px;
+}
+
+.goal-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+
+  border: 2px solid var(--pink);
+  background: white;
+
+  flex-shrink: 0;
+}
+
+.goal-checkbox.completed {
+  background: var(--dark-pink);
+  color: white;
+}
+
+.goal-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .goal-text {
-  flex: 1;
-  line-height: 1.5;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
-.goal button {
-  background: var(--soft);
-  border-radius: 999px;
-  padding: 8px 12px;
+.goal-text.completed {
+  text-decoration: line-through;
+  opacity: .5;
 }
 
-.goal-line {
-  height: 1px;
-  background: #efd6de;
-  margin: 18px 0;
+.goal-completed-by {
+  font-size: 11px;
+  opacity: .55;
+  margin-top: 3px;
 }
 
-.small-text {
+.goal-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.goal-actions button {
+  background: transparent;
+  padding: 5px;
+  opacity: .65;
+}
+
+.no-goals {
+  text-align: center;
+  opacity: .5;
   font-size: 13px;
-  opacity: .6;
+  padding: 15px;
 }
+
+/* CHAT */
 
 .messages {
   min-height: 130px;
-  max-height: 180px;
+  max-height: 220px;
   overflow-y: auto;
   padding-right: 5px;
 }
@@ -289,49 +425,6 @@ button {
   color: white;
 }
 
-.invite-box {
-  display: none;
-  margin: 18px 0;
-  padding: 20px;
-  background: rgba(255,255,255,.9);
-  border: 1px solid #f0d4de;
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-}
-
-.invite-box.visible {
-  display: block;
-}
-
-.invite-title {
-  font-family: "Playfair Display", serif;
-  font-style: italic;
-  font-size: 21px;
-}
-
-.invite-code {
-  font-size: 25px;
-  letter-spacing: 4px;
-  margin: 10px 0;
-  color: var(--dark-pink);
-}
-
-.invite-link {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #efd6de;
-  border-radius: 12px;
-  background: #fffafa;
-  margin-bottom: 9px;
-}
-
-.copy-btn {
-  background: var(--dark-pink);
-  color: white;
-  border-radius: 999px;
-  padding: 10px 17px;
-}
-
 .status {
   text-align: center;
   font-size: 12px;
@@ -348,6 +441,7 @@ footer {
 }
 
 @media(max-width: 700px) {
+
   .video-area,
   .bottom-grid {
     grid-template-columns: 1fr;
@@ -368,74 +462,53 @@ footer {
 <body>
 
 <header class="top">
+
   <div>
-    <div class="logo">study<span>together</span> ♡</div>
-    <div class="room-name">no room yet ✦</div>
+    <div class="logo">
+      study<span>together</span> ♡
+    </div>
+
+    <div class="room-name">
+      no room yet ✦
+    </div>
   </div>
 
   <button class="create-btn" onclick="createRoom()">
     create room ♡
   </button>
+
 </header>
 
 <main class="page">
 
   <div class="invite-box" id="inviteBox">
-    <div class="invite-title">your room is ready ♡</div>
+
+    <div class="invite-title">
+      your room is ready ♡
+    </div>
+
     <div class="invite-code" id="inviteCode"></div>
 
     <input
       class="invite-link"
       id="inviteLink"
       readonly
+      aria-label="Invite link"
     >
 
     <button class="copy-btn" onclick="copyInvite()">
       copy invite link ♡
     </button>
+
   </div>
 
-  <section class="video-area">
+  <div class="people-count" id="peopleCount">
+    0 people in the room
+  </div>
 
-    <div class="video-card">
+  <section class="video-area" id="videoArea">
 
-      <video
-        id="localVideo"
-        autoplay
-        muted
-        playsinline
-      ></video>
-
-      <div class="name" id="localName">
-        you ♡
-      </div>
-
-      <div class="video-controls">
-        <button onclick="toggleMic()" id="micBtn">🎙️</button>
-        <button onclick="toggleCamera()" id="cameraBtn">📷</button>
-      </div>
-
-    </div>
-
-    <div class="video-card">
-
-      <div class="video-placeholder" id="remotePlaceholder">
-        <span>✦</span>
-        <p id="remoteWaiting">waiting for your study buddy...</p>
-      </div>
-
-      <video
-        id="remoteVideo"
-        autoplay
-        playsinline
-        style="display:none"
-      ></video>
-
-      <div class="name" id="remoteName">
-        your study buddy
-      </div>
-
-    </div>
+    <!-- Video tiles are created here dynamically -->
 
   </section>
 
@@ -445,70 +518,119 @@ footer {
 
   <section class="timer-card">
 
-    <div class="timer-label">✦ focus session ✦</div>
+    <div class="timer-label">
+      ✦ focus session ✦
+    </div>
 
-    <div id="timer">25:00</div>
+    <div id="timer">
+      25:00
+    </div>
 
     <div class="timer-mode" id="timerMode">
       focus ♡
     </div>
 
     <div class="timer-buttons">
-      <button onclick="startTimer()">start</button>
-      <button onclick="pauseTimer()">pause</button>
-      <button onclick="resetTimer()">reset</button>
+
+      <button onclick="startTimer()">
+        start
+      </button>
+
+      <button onclick="pauseTimer()">
+        pause
+      </button>
+
+      <button onclick="resetTimer()">
+        reset
+      </button>
+
     </div>
 
     <br>
 
     <div class="presets">
-      <button onclick="setTimer(25)">25 min</button>
-      <button onclick="setTimer(50)">50 min</button>
-      <button onclick="setTimer(90)">90 min</button>
-      <button onclick="customizeTimer()">♡ customize</button>
+
+      <button onclick="setTimer(25)">
+        25 min
+      </button>
+
+      <button onclick="setTimer(50)">
+        50 min
+      </button>
+
+      <button onclick="setTimer(90)">
+        90 min
+      </button>
+
+      <button onclick="customizeTimer()">
+        ♡ customize
+      </button>
+
     </div>
 
   </section>
 
   <section class="bottom-grid">
 
+    <!-- GOALS -->
+
     <div class="card goal-card">
 
-      <div class="card-title">🎀 my goal</div>
+      <div class="card-title">
+        🎀 shared goals
+      </div>
 
-      <div class="goal">
+      <div class="goal-input">
 
-        <div class="goal-text" id="goalText">
-          Finish 30 pages of cognitive psychology
-        </div>
+        <input
+          id="goalInput"
+          placeholder="add a goal..."
+          aria-label="New goal"
+          onkeydown="if(event.key==='Enter') addGoal()"
+        >
 
-        <button onclick="editGoal()">edit ♡</button>
+        <button onclick="addGoal()">
+          + add
+        </button>
 
       </div>
 
-      <div class="goal-line"></div>
+      <div
+        class="goals-list"
+        id="goalsList"
+      ></div>
 
       <div class="small-text">
-        one little step at a time ✦
+        everyone in the room can see your progress ✦
       </div>
 
     </div>
 
+    <!-- CHAT -->
+
     <div class="card chat-card">
 
-      <div class="card-title">💌 chat</div>
+      <div class="card-title">
+        💌 chat
+      </div>
 
-      <div class="messages" id="messages"></div>
+      <div
+        class="messages"
+        id="messages"
+      ></div>
 
       <div class="chat-input">
 
         <input
           id="chatInput"
           placeholder="say something..."
+          aria-label="Chat message"
           onkeydown="if(event.key==='Enter') sendMessage()"
         >
 
-        <button onclick="sendMessage()">♡</button>
+        <button onclick="sendMessage()">
+          ♡
+        </button>
 
       </div>
 
@@ -521,6 +643,7 @@ footer {
   </footer>
 
 </main>
+
 
 <script>
 
@@ -548,21 +671,43 @@ const supabaseClient =
 let roomCode = null;
 let roomId = null;
 let myName = null;
-let isCreator = false;
+
+let participantId =
+  crypto.randomUUID();
 
 let channel = null;
 let localStream = null;
-let peerConnection = null;
+
+const peers = new Map();
 
 let micOn = true;
 let cameraOn = true;
 
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
 let timerInterval = null;
+
 let timerSeconds = 25 * 60;
+
 let focusMinutes = 25;
 let breakMinutes = 5;
+
 let timerRunning = false;
 let timerMode = "focus";
+
+let timerStartedAt = null;
+
+
+/* =========================================================
+   GOALS
+   ========================================================= */
+
+let goals = [];
+
+let goalsChannel = null;
 
 
 /* =========================================================
@@ -570,10 +715,16 @@ let timerMode = "focus";
    ========================================================= */
 
 function showStatus(text) {
-  document.getElementById("status").textContent = text;
+
+  document.getElementById("status")
+    .textContent = text;
+
 }
 
+
 function formatTime(seconds) {
+
+  seconds = Math.max(0, Math.floor(seconds));
 
   const minutes =
     Math.floor(seconds / 60)
@@ -588,9 +739,161 @@ function formatTime(seconds) {
   return `${minutes}:${secs}`;
 }
 
+
 function updateTimerDisplay() {
-  document.getElementById("timer").textContent =
+
+  document.getElementById("timer")
+    .textContent =
     formatTime(timerSeconds);
+
+}
+
+
+function updateTimerModeDisplay() {
+
+  document.getElementById("timerMode")
+    .textContent =
+    timerMode === "focus"
+      ? "focus ♡"
+      : "break ✦";
+
+}
+
+
+/* =========================================================
+   VIDEO TILE
+   ========================================================= */
+
+function createVideoTile(
+  id,
+  name,
+  stream,
+  isLocal = false
+) {
+
+  let existing =
+    document.getElementById(
+      "video-" + id
+    );
+
+  if (existing) {
+
+    const video =
+      existing.querySelector("video");
+
+    if (stream && video) {
+      video.srcObject = stream;
+    }
+
+    return existing;
+  }
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "video-card";
+
+  card.id =
+    "video-" + id;
+
+
+  const video =
+    document.createElement("video");
+
+  video.autoplay = true;
+  video.playsInline = true;
+
+  if (isLocal) {
+    video.muted = true;
+  }
+
+  if (stream) {
+    video.srcObject = stream;
+  }
+
+
+  const nameLabel =
+    document.createElement("div");
+
+  nameLabel.className =
+    "name";
+
+  nameLabel.textContent =
+    name + (isLocal ? " ♡" : "");
+
+
+  const controls =
+    document.createElement("div");
+
+  controls.className =
+    "video-controls";
+
+
+  if (isLocal) {
+
+    const mic =
+      document.createElement("button");
+
+    mic.id = "micBtn";
+    mic.textContent = "🎙️";
+
+    mic.onclick =
+      toggleMic;
+
+
+    const camera =
+      document.createElement("button");
+
+    camera.id = "cameraBtn";
+    camera.textContent = "📷";
+
+    camera.onclick =
+      toggleCamera;
+
+
+    controls.appendChild(mic);
+    controls.appendChild(camera);
+
+  }
+
+
+  card.appendChild(video);
+  card.appendChild(nameLabel);
+  card.appendChild(controls);
+
+  document.getElementById("videoArea")
+    .appendChild(card);
+
+
+  return card;
+}
+
+
+function removeVideoTile(id) {
+
+  const tile =
+    document.getElementById(
+      "video-" + id
+    );
+
+  if (tile) {
+    tile.remove();
+  }
+}
+
+
+function updatePeopleCount() {
+
+  const count =
+    1 + peers.size;
+
+  document.getElementById(
+    "peopleCount"
+  ).textContent =
+    count === 1
+      ? "1 person in the room"
+      : `${count} people in the room`;
 }
 
 
@@ -600,62 +903,104 @@ function updateTimerDisplay() {
 
 async function startCamera() {
 
+  if (localStream)
+    return localStream;
+
   try {
 
     localStream =
-      await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-      });
+      await navigator.mediaDevices
+        .getUserMedia({
+          video: true,
+          audio: true
+        });
 
-    document.getElementById("localVideo").srcObject =
-      localStream;
+    createVideoTile(
+      participantId,
+      myName || "you",
+      localStream,
+      true
+    );
 
-    showStatus("camera ready ♡");
+    return localStream;
 
   } catch (error) {
 
-    console.error("Camera error:", error);
-
-    showStatus(
-      "camera permission is needed for video ♡"
+    console.error(
+      "Camera error:",
+      error
     );
 
+    showStatus(
+      "camera permission was not available ♡"
+    );
+
+    return null;
   }
 }
 
+
 function toggleMic() {
 
-  if (!localStream) return;
+  if (!localStream)
+    return;
 
   const track =
-    localStream.getAudioTracks()[0];
+    localStream
+      .getAudioTracks()[0];
 
-  if (!track) return;
+  if (!track)
+    return;
 
   micOn = !micOn;
 
-  track.enabled = micOn;
+  track.enabled =
+    micOn;
 
-  document.getElementById("micBtn").textContent =
-    micOn ? "🎙️" : "🔇";
+  const button =
+    document.getElementById(
+      "micBtn"
+    );
+
+  if (button) {
+
+    button.textContent =
+      micOn
+        ? "🎙️"
+        : "🔇";
+  }
 }
+
 
 function toggleCamera() {
 
-  if (!localStream) return;
+  if (!localStream)
+    return;
 
   const track =
-    localStream.getVideoTracks()[0];
+    localStream
+      .getVideoTracks()[0];
 
-  if (!track) return;
+  if (!track)
+    return;
 
   cameraOn = !cameraOn;
 
-  track.enabled = cameraOn;
+  track.enabled =
+    cameraOn;
 
-  document.getElementById("cameraBtn").textContent =
-    cameraOn ? "📷" : "🚫";
+  const button =
+    document.getElementById(
+      "cameraBtn"
+    );
+
+  if (button) {
+
+    button.textContent =
+      cameraOn
+        ? "📷"
+        : "🚫";
+  }
 }
 
 
@@ -666,12 +1011,16 @@ function toggleCamera() {
 async function createRoom() {
 
   const name =
-    prompt("What's your name? ♡");
+    prompt(
+      "What's your name? ♡"
+    );
 
-  if (!name || !name.trim()) return;
+  if (!name || !name.trim())
+    return;
 
-  const cleanName =
+  myName =
     name.trim();
+
 
   const generatedCode =
     Math.random()
@@ -679,18 +1028,20 @@ async function createRoom() {
       .substring(2, 8)
       .toUpperCase();
 
+
   const { data: room, error } =
     await supabaseClient
       .from("rooms")
       .insert([{
         room_code: generatedCode,
-        focus_minutes: focusMinutes,
-        break_minutes: breakMinutes,
+        focus_minutes: 25,
+        break_minutes: 5,
         timer_mode: "focus",
-        time_left: focusMinutes * 60
+        time_left: 25 * 60
       }])
       .select()
       .single();
+
 
   if (error) {
 
@@ -703,67 +1054,88 @@ async function createRoom() {
     return;
   }
 
+
   const { error: participantError } =
     await supabaseClient
       .from("participants")
       .insert([{
         room_id: room.id,
-        name: cleanName
+        name: myName
       }]);
 
+
   if (participantError) {
-    console.error(participantError);
+
+    console.error(
+      participantError
+    );
+
+    alert(
+      "The room was created, but we couldn't register you ♡"
+    );
+
+    return;
   }
 
-  roomCode = generatedCode;
-  roomId = room.id;
-  myName = cleanName;
-  isCreator = true;
+
+  roomCode =
+    generatedCode;
+
+  roomId =
+    room.id;
+
 
   sessionStorage.setItem(
     "studyTogetherName",
-    cleanName
+    myName
   );
 
   sessionStorage.setItem(
     "studyTogetherRoom",
-    generatedCode
+    roomCode
   );
 
-  sessionStorage.setItem(
-    "studyTogetherCreator",
-    "true"
-  );
 
   const roomUrl =
     window.location.origin +
     window.location.pathname +
     "?room=" +
-    generatedCode;
+    roomCode;
 
-  document.querySelector(".room-name").textContent =
-    `room ${generatedCode} ✦`;
 
-  document.getElementById("localName").textContent =
-    `${cleanName} ♡`;
+  document.querySelector(
+    ".room-name"
+  ).textContent =
+    `room ${roomCode} ✦`;
 
-  document.getElementById("inviteCode").textContent =
-    generatedCode;
 
-  document.getElementById("inviteLink").value =
+  document.getElementById(
+    "inviteCode"
+  ).textContent =
+    roomCode;
+
+
+  document.getElementById(
+    "inviteLink"
+  ).value =
     roomUrl;
 
-  document.getElementById("inviteBox")
-    .classList.add("visible");
+
+  document.getElementById(
+    "inviteBox"
+  ).classList.add(
+    "visible"
+  );
+
 
   history.replaceState(
     {},
     "",
-    "?room=" + generatedCode
+    "?room=" + roomCode
   );
 
-  await enterRoom();
 
+  await enterRoom();
 }
 
 
@@ -781,6 +1153,7 @@ async function joinRoomFromLink() {
   const code =
     params.get("room");
 
+
   if (!code) {
 
     await startCamera();
@@ -788,15 +1161,21 @@ async function joinRoomFromLink() {
     return;
   }
 
+
   const upperCode =
     code.toUpperCase();
+
 
   const { data: room, error } =
     await supabaseClient
       .from("rooms")
       .select("*")
-      .eq("room_code", upperCode)
+      .eq(
+        "room_code",
+        upperCode
+      )
       .single();
+
 
   if (error || !room) {
 
@@ -807,8 +1186,13 @@ async function joinRoomFromLink() {
     return;
   }
 
-  roomCode = upperCode;
-  roomId = room.id;
+
+  roomCode =
+    upperCode;
+
+  roomId =
+    room.id;
+
 
   const savedName =
     sessionStorage.getItem(
@@ -820,19 +1204,14 @@ async function joinRoomFromLink() {
       "studyTogetherRoom"
     );
 
-  const savedCreator =
-    sessionStorage.getItem(
-      "studyTogetherCreator"
-    );
 
   if (
     savedName &&
-    savedRoom === upperCode &&
-    savedCreator === "true"
+    savedRoom === upperCode
   ) {
 
-    myName = savedName;
-    isCreator = true;
+    myName =
+      savedName;
 
   } else {
 
@@ -841,10 +1220,12 @@ async function joinRoomFromLink() {
         "You've been invited to study together ♡\n\nWhat's your name?"
       );
 
-    if (!name || !name.trim()) return;
+    if (!name || !name.trim())
+      return;
 
-    myName = name.trim();
-    isCreator = false;
+    myName =
+      name.trim();
+
 
     sessionStorage.setItem(
       "studyTogetherName",
@@ -856,9 +1237,6 @@ async function joinRoomFromLink() {
       upperCode
     );
 
-    sessionStorage.removeItem(
-      "studyTogetherCreator"
-    );
 
     const { error: joinError } =
       await supabaseClient
@@ -868,31 +1246,55 @@ async function joinRoomFromLink() {
           name: myName
         }]);
 
+
     if (joinError) {
-      console.error(joinError);
+
+      console.error(
+        joinError
+      );
+
+      alert(
+        "We couldn't add you to the room ♡"
+      );
+
+      return;
     }
   }
 
-  document.querySelector(".room-name").textContent =
+
+  document.querySelector(
+    ".room-name"
+  ).textContent =
     `room ${upperCode} ✦`;
 
-  document.getElementById("localName").textContent =
-    `${myName} ♡`;
 
-  document.getElementById("inviteBox")
-    .classList.remove("visible");
+  document.getElementById(
+    "inviteBox"
+  ).classList.remove(
+    "visible"
+  );
+
 
   await enterRoom();
 }
 
 
 /* =========================================================
-   ENTER REALTIME ROOM
+   ENTER ROOM
    ========================================================= */
 
 async function enterRoom() {
 
   await startCamera();
+
+
+  createVideoTile(
+    participantId,
+    myName,
+    localStream,
+    true
+  );
+
 
   channel =
     supabaseClient.channel(
@@ -900,212 +1302,304 @@ async function enterRoom() {
       {
         config: {
           presence: {
-            key: myName
+            key: participantId
           }
         }
       }
     );
 
-  channel
-    .on(
-      "presence",
-      { event: "sync" },
-      () => {
 
-        const state =
-          channel.presenceState();
+  /* PRESENCE */
 
-        const people =
-          Object.values(state)
-            .flat()
-            .filter(
-              person =>
-                person.name !== myName
-            );
+  channel.on(
+    "presence",
+    {
+      event: "sync"
+    },
+    async () => {
 
-        if (people.length > 0) {
+      const state =
+        channel.presenceState();
 
-          const friend =
-            people[0];
 
-          document.getElementById(
-            "remoteName"
-          ).textContent =
-            `${friend.name} ♡`;
+      const people = [];
 
-          document.getElementById(
-            "remoteWaiting"
-          ).textContent =
-            `${friend.name} is here ♡`;
 
-          showStatus(
-            `${friend.name} joined your room ♡`
+      Object.entries(state)
+        .forEach(
+          ([key, entries]) => {
+
+            if (
+              key === participantId
+            )
+              return;
+
+            const person =
+              entries[0];
+
+            if (!person)
+              return;
+
+            people.push({
+              id: key,
+              name:
+                person.name ||
+                "study buddy"
+            });
+          }
+        );
+
+
+      /*
+       * Remove people who are no longer present.
+       */
+
+      for (
+        const [id, peer] of peers
+      ) {
+
+        const stillHere =
+          people.some(
+            person =>
+              person.id === id
           );
 
-        } else {
+        if (!stillHere) {
 
-          document.getElementById(
-            "remoteName"
-          ).textContent =
-            "your study buddy";
+          if (
+            peer.connection
+          ) {
+            peer.connection.close();
+          }
 
-          document.getElementById(
-            "remoteWaiting"
-          ).textContent =
-            "waiting for your study buddy...";
+          peers.delete(id);
 
-          showStatus(
-            "waiting for your study buddy..."
+          removeVideoTile(id);
+        }
+      }
+
+
+      /*
+       * Create connections for everyone.
+       */
+
+      for (const person of people) {
+
+        await ensurePeer(
+          person.id,
+          person.name
+        );
+      }
+
+
+      updatePeopleCount();
+
+
+      if (people.length === 0) {
+
+        showStatus(
+          "waiting for your study buddies... ♡"
+        );
+
+      } else {
+
+        showStatus(
+          `${people.length + 1} people studying together ♡`
+        );
+      }
+    }
+  );
+
+
+  /* SIGNALING */
+
+  channel.on(
+    "broadcast",
+    {
+      event: "offer"
+    },
+    async ({ payload }) => {
+
+      if (
+        payload.to !== participantId
+      )
+        return;
+
+      await handleOffer(
+        payload.from,
+        payload.name,
+        payload.offer
+      );
+    }
+  );
+
+
+  channel.on(
+    "broadcast",
+    {
+      event: "answer"
+    },
+    async ({ payload }) => {
+
+      if (
+        payload.to !== participantId
+      )
+        return;
+
+      const peer =
+        peers.get(
+          payload.from
+        );
+
+      if (!peer)
+        return;
+
+      try {
+
+        await peer.connection
+          .setRemoteDescription(
+            new RTCSessionDescription(
+              payload.answer
+            )
           );
-        }
-      }
-    )
 
-    .on(
-      "broadcast",
-      { event: "ready" },
-      async () => {
+      } catch (error) {
 
-        if (isCreator) {
-          await createOffer();
-        }
-      }
-    )
-
-    .on(
-      "broadcast",
-      { event: "offer" },
-      async ({ payload }) => {
-
-        if (isCreator) return;
-
-        await handleOffer(
-          payload.offer
+        console.error(
+          "Answer error:",
+          error
         );
       }
-    )
+    }
+  );
 
-    .on(
-      "broadcast",
-      { event: "answer" },
-      async ({ payload }) => {
 
-        if (!isCreator) return;
+  channel.on(
+    "broadcast",
+    {
+      event: "ice"
+    },
+    async ({ payload }) => {
 
-        if (!peerConnection) return;
+      if (
+        payload.to !== participantId
+      )
+        return;
 
-        await peerConnection.setRemoteDescription(
-          new RTCSessionDescription(
-            payload.answer
-          )
+      const peer =
+        peers.get(
+          payload.from
         );
-      }
-    )
 
-    .on(
-      "broadcast",
-      { event: "ice" },
-      async ({ payload }) => {
+      if (!peer)
+        return;
 
-        if (!peerConnection) return;
+      try {
 
-        try {
-
-          await peerConnection.addIceCandidate(
+        await peer.connection
+          .addIceCandidate(
             new RTCIceCandidate(
               payload.candidate
             )
           );
 
-        } catch (error) {
+      } catch (error) {
 
-          console.error(
-            "ICE error:",
-            error
-          );
-        }
-      }
-    )
-
-    .on(
-      "broadcast",
-      { event: "chat" },
-      ({ payload }) => {
-
-        addMessage(
-          payload.name,
-          payload.message
+        console.error(
+          "ICE candidate error:",
+          error
         );
       }
-    )
+    }
+  );
 
-    .on(
-      "broadcast",
-      { event: "timer" },
-      ({ payload }) => {
 
-        timerSeconds =
-          payload.seconds;
+  /* CHAT */
 
-        timerMode =
-          payload.mode;
+  channel.on(
+    "broadcast",
+    {
+      event: "chat"
+    },
+    ({ payload }) => {
 
-        timerRunning =
-          payload.running;
+      addMessage(
+        payload.name,
+        payload.message
+      );
+    }
+  );
 
-        updateTimerDisplay();
 
-        document.getElementById(
-          "timerMode"
-        ).textContent =
-          timerMode === "focus"
-            ? "focus ♡"
-            : "break ✦";
+  /* TIMER */
 
-        if (timerRunning) {
-          startLocalTimer(false);
-        } else {
-          stopLocalTimer();
-        }
-      }
-    )
+  channel.on(
+    "broadcast",
+    {
+      event: "timer"
+    },
+    ({ payload }) => {
 
-    .subscribe(
-      async status => {
+      applyRemoteTimer(
+        payload
+      );
+    }
+  );
 
-        if (status !== "SUBSCRIBED")
-          return;
 
-        await channel.track({
-          name: myName
-        });
+  await channel.subscribe(
+    async status => {
 
-        showStatus(
-          "you're in the room ♡"
-        );
+      if (
+        status !== "SUBSCRIBED"
+      )
+        return;
 
-        if (!isCreator) {
 
-          await channel.send({
-            type: "broadcast",
-            event: "ready",
-            payload: {
-              name: myName
-            }
-          });
-        }
-      }
-    );
+      await channel.track({
+        name: myName
+      });
+
+
+      showStatus(
+        "you're in the room ♡"
+      );
+
+
+      await loadGoals();
+
+      subscribeToGoals();
+    }
+  );
 }
 
 
 /* =========================================================
-   WEBRTC
+   WEBRTC MULTI-PERSON
    ========================================================= */
 
-function createPeerConnection() {
+async function ensurePeer(
+  id,
+  name
+) {
 
-  peerConnection =
+  if (id === participantId)
+    return;
+
+
+  if (peers.has(id)) {
+
+    const existing =
+      peers.get(id);
+
+    existing.name =
+      name;
+
+    return;
+  }
+
+
+  const connection =
     new RTCPeerConnection({
       iceServers: [
         {
@@ -1119,106 +1613,276 @@ function createPeerConnection() {
       ]
     });
 
+
   if (localStream) {
 
     localStream
       .getTracks()
-      .forEach(track => {
+      .forEach(
+        track => {
 
-        peerConnection.addTrack(
-          track,
-          localStream
-        );
+          connection.addTrack(
+            track,
+            localStream
+          );
 
-      });
+        }
+      );
   }
 
-  peerConnection.ontrack =
+
+  const peer = {
+    connection,
+    name,
+    makingOffer: false,
+    candidateQueue: []
+  };
+
+
+  peers.set(
+    id,
+    peer
+  );
+
+
+  connection.ontrack =
     event => {
 
-      const remoteVideo =
-        document.getElementById(
-          "remoteVideo"
-        );
-
-      remoteVideo.srcObject =
+      const stream =
         event.streams[0];
 
-      remoteVideo.style.display =
-        "block";
-
-      document.getElementById(
-        "remotePlaceholder"
-      ).style.display =
-        "none";
+      createVideoTile(
+        id,
+        name,
+        stream,
+        false
+      );
 
       showStatus(
-        "you're studying together ♡"
+        `${name} joined the study room ♡`
       );
     };
 
-  peerConnection.onicecandidate =
+
+  connection.onicecandidate =
     async event => {
 
-      if (!event.candidate) return;
+      if (
+        !event.candidate ||
+        !channel
+      )
+        return;
+
 
       await channel.send({
         type: "broadcast",
         event: "ice",
         payload: {
+          from:
+            participantId,
+          to: id,
           candidate:
             event.candidate
         }
       });
     };
+
+
+  /*
+   * Deterministic rule:
+   * the participant with the smaller ID
+   * creates the offer.
+   *
+   * This prevents both sides from creating
+   * competing offers.
+   */
+
+  if (
+    participantId < id
+  ) {
+
+    try {
+
+      peer.makingOffer =
+        true;
+
+      const offer =
+        await connection
+          .createOffer();
+
+      await connection
+        .setLocalDescription(
+          offer
+        );
+
+
+      await channel.send({
+        type: "broadcast",
+        event: "offer",
+        payload: {
+          from:
+            participantId,
+          to:
+            id,
+          name:
+            myName,
+          offer
+        }
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Offer error:",
+        error
+      );
+
+    } finally {
+
+      peer.makingOffer =
+        false;
+    }
+  }
 }
 
 
-async function createOffer() {
+async function handleOffer(
+  from,
+  name,
+  offer
+) {
 
-  createPeerConnection();
+  let peer =
+    peers.get(from);
 
-  const offer =
-    await peerConnection.createOffer();
 
-  await peerConnection.setLocalDescription(
-    offer
-  );
+  if (!peer) {
 
-  await channel.send({
-    type: "broadcast",
-    event: "offer",
-    payload: {
-      offer: offer
+    const connection =
+      new RTCPeerConnection({
+        iceServers: [
+          {
+            urls:
+              "stun:stun.l.google.com:19302"
+          },
+          {
+            urls:
+              "stun:stun1.l.google.com:19302"
+          }
+        ]
+      });
+
+
+    if (localStream) {
+
+      localStream
+        .getTracks()
+        .forEach(
+          track => {
+
+            connection.addTrack(
+              track,
+              localStream
+            );
+
+          }
+        );
     }
-  });
-}
 
 
-async function handleOffer(offer) {
+    peer = {
+      connection,
+      name,
+      makingOffer: false,
+      candidateQueue: []
+    };
 
-  createPeerConnection();
 
-  await peerConnection.setRemoteDescription(
-    new RTCSessionDescription(
-      offer
-    )
-  );
+    peers.set(
+      from,
+      peer
+    );
 
-  const answer =
-    await peerConnection.createAnswer();
 
-  await peerConnection.setLocalDescription(
-    answer
-  );
+    connection.ontrack =
+      event => {
 
-  await channel.send({
-    type: "broadcast",
-    event: "answer",
-    payload: {
-      answer: answer
-    }
-  });
+        createVideoTile(
+          from,
+          name,
+          event.streams[0],
+          false
+        );
+
+        updatePeopleCount();
+      };
+
+
+    connection.onicecandidate =
+      async event => {
+
+        if (
+          !event.candidate
+        )
+          return;
+
+        await channel.send({
+          type: "broadcast",
+          event: "ice",
+          payload: {
+            from:
+              participantId,
+            to:
+              from,
+            candidate:
+              event.candidate
+          }
+        });
+      };
+  }
+
+
+  try {
+
+    await peer.connection
+      .setRemoteDescription(
+        new RTCSessionDescription(
+          offer
+        )
+      );
+
+
+    const answer =
+      await peer.connection
+        .createAnswer();
+
+
+    await peer.connection
+      .setLocalDescription(
+        answer
+      );
+
+
+    await channel.send({
+      type: "broadcast",
+      event: "answer",
+      payload: {
+        from:
+          participantId,
+        to:
+          from,
+        answer
+      }
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "Offer handling error:",
+      error
+    );
+  }
 }
 
 
@@ -1233,34 +1897,46 @@ async function copyInvite() {
       "inviteLink"
     );
 
+
   try {
 
-    await navigator.clipboard.writeText(
-      input.value
-    );
+    await navigator.clipboard
+      .writeText(
+        input.value
+      );
+
 
     const button =
       document.querySelector(
         ".copy-btn"
       );
 
+
     button.textContent =
       "copied ♡";
 
-    setTimeout(() => {
-      button.textContent =
-        "copy invite link ♡";
-    }, 1800);
+
+    setTimeout(
+      () => {
+
+        button.textContent =
+          "copy invite link ♡";
+
+      },
+      1800
+    );
+
 
   } catch {
 
+    input.focus();
+
     input.select();
-    input.setSelectionRange(
-      0,
-      99999
+
+    document.execCommand(
+      "copy"
     );
 
-    document.execCommand("copy");
 
     alert(
       "Invite link copied ♡"
@@ -1283,16 +1959,27 @@ function addMessage(
       "messages"
     );
 
+
   const p =
-    document.createElement("p");
+    document.createElement(
+      "p"
+    );
+
 
   const bold =
-    document.createElement("b");
+    document.createElement(
+      "b"
+    );
+
 
   bold.textContent =
     name + ":";
 
-  p.appendChild(bold);
+
+  p.appendChild(
+    bold
+  );
+
 
   p.appendChild(
     document.createTextNode(
@@ -1300,7 +1987,11 @@ function addMessage(
     )
   );
 
-  container.appendChild(p);
+
+  container.appendChild(
+    p
+  );
+
 
   container.scrollTop =
     container.scrollHeight;
@@ -1314,65 +2005,629 @@ async function sendMessage() {
       "chatInput"
     );
 
+
   const message =
     input.value.trim();
 
-  if (!message || !channel)
+
+  if (
+    !message ||
+    !channel
+  )
     return;
+
 
   addMessage(
     myName,
     message
   );
 
+
   await channel.send({
     type: "broadcast",
     event: "chat",
     payload: {
-      name: myName,
-      message: message
+      name:
+        myName,
+      message
     }
   });
 
-  input.value = "";
+
+  input.value =
+    "";
 }
 
 
 /* =========================================================
-   GOAL
+   GOALS
    ========================================================= */
 
-function editGoal() {
+async function loadGoals() {
 
-  const current =
-    document.getElementById(
-      "goalText"
-    ).textContent;
-
-  const newGoal =
-    prompt(
-      "What's your goal? ♡",
-      current
-    );
-
-  if (!newGoal || !newGoal.trim())
+  if (!roomId)
     return;
 
-  document.getElementById(
-    "goalText"
-  ).textContent =
-    newGoal.trim();
 
-  if (channel) {
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("goals")
+      .select("*")
+      .eq(
+        "room_id",
+        roomId
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
 
-    channel.send({
-      type: "broadcast",
-      event: "goal",
-      payload: {
-        goal: newGoal.trim()
-      }
-    });
+
+  if (error) {
+
+    console.error(
+      "Goal loading error:",
+      error
+    );
+
+    return;
   }
+
+
+  goals =
+    data || [];
+
+
+  renderGoals();
+}
+
+
+function renderGoals() {
+
+  const list =
+    document.getElementById(
+      "goalsList"
+    );
+
+
+  list.innerHTML =
+    "";
+
+
+  if (!goals.length) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "no-goals";
+
+    empty.textContent =
+      "No goals yet ♡ Add one above!";
+
+    list.appendChild(
+      empty
+    );
+
+    return;
+  }
+
+
+  goals.forEach(
+    goal => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "goal-item";
+
+
+      const checkbox =
+        document.createElement(
+          "button"
+        );
+
+      checkbox.className =
+        "goal-checkbox" +
+        (
+          goal.completed
+            ? " completed"
+            : ""
+        );
+
+      checkbox.textContent =
+        goal.completed
+          ? "✓"
+          : "";
+
+
+      checkbox.onclick =
+        () => toggleGoal(
+          goal
+        );
+
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "goal-content";
+
+
+      const text =
+        document.createElement(
+          "div"
+        );
+
+      text.className =
+        "goal-text" +
+        (
+          goal.completed
+            ? " completed"
+            : ""
+        );
+
+      text.textContent =
+        goal.text;
+
+
+      content.appendChild(
+        text
+      );
+
+
+      if (
+        goal.completed &&
+        goal.completed_by
+      ) {
+
+        const completedBy =
+          document.createElement(
+            "div"
+          );
+
+        completedBy.className =
+          "goal-completed-by";
+
+        completedBy.textContent =
+          `✓ completed by ${goal.completed_by}`;
+
+        content.appendChild(
+          completedBy
+        );
+      }
+
+
+      const actions =
+        document.createElement(
+          "div"
+        );
+
+      actions.className =
+        "goal-actions";
+
+
+      const edit =
+        document.createElement(
+          "button"
+        );
+
+      edit.textContent =
+        "✎";
+
+      edit.title =
+        "Edit goal";
+
+      edit.onclick =
+        () => editGoal(
+          goal
+        );
+
+
+      const remove =
+        document.createElement(
+          "button"
+        );
+
+      remove.textContent =
+        "×";
+
+      remove.title =
+        "Delete goal";
+
+      remove.onclick =
+        () => deleteGoal(
+          goal
+        );
+
+
+      actions.appendChild(
+        edit
+      );
+
+      actions.appendChild(
+        remove
+      );
+
+
+      item.appendChild(
+        checkbox
+      );
+
+      item.appendChild(
+        content
+      );
+
+      item.appendChild(
+        actions
+      );
+
+
+      list.appendChild(
+        item
+      );
+    }
+  );
+}
+
+
+async function addGoal() {
+
+  if (!roomId) {
+
+    alert(
+      "Create or join a room first ♡"
+    );
+
+    return;
+  }
+
+
+  const input =
+    document.getElementById(
+      "goalInput"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if (!text)
+    return;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("goals")
+      .insert([{
+        room_id:
+          roomId,
+        text:
+          text,
+        completed:
+          false,
+        completed_by:
+          null
+      }])
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Add goal error:",
+      error
+    );
+
+    alert(
+      "Couldn't add that goal ♡"
+    );
+
+    return;
+  }
+
+
+  input.value =
+    "";
+
+
+  /*
+   * Realtime will update everyone.
+   * We also update ourselves immediately.
+   */
+
+  const exists =
+    goals.some(
+      goal =>
+        goal.id === data.id
+    );
+
+
+  if (!exists) {
+
+    goals.push(
+      data
+    );
+
+    renderGoals();
+  }
+}
+
+
+async function toggleGoal(
+  goal
+) {
+
+  const completed =
+    !goal.completed;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("goals")
+      .update({
+        completed,
+        completed_by:
+          completed
+            ? myName
+            : null
+      })
+      .eq(
+        "id",
+        goal.id
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Goal update error:",
+      error
+    );
+
+    return;
+  }
+
+
+  updateGoalLocally(
+    data
+  );
+}
+
+
+async function editGoal(
+  goal
+) {
+
+  const text =
+    prompt(
+      "Edit your goal ♡",
+      goal.text
+    );
+
+
+  if (
+    text === null ||
+    !text.trim()
+  )
+    return;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("goals")
+      .update({
+        text:
+          text.trim()
+      })
+      .eq(
+        "id",
+        goal.id
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Goal edit error:",
+      error
+    );
+
+    return;
+  }
+
+
+  updateGoalLocally(
+    data
+  );
+}
+
+
+async function deleteGoal(
+  goal
+) {
+
+  const yes =
+    confirm(
+      `Delete "${goal.text}"?`
+    );
+
+
+  if (!yes)
+    return;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("goals")
+      .delete()
+      .eq(
+        "id",
+        goal.id
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Goal delete error:",
+      error
+    );
+
+    return;
+  }
+
+
+  goals =
+    goals.filter(
+      item =>
+        item.id !== goal.id
+    );
+
+
+  renderGoals();
+}
+
+
+function updateGoalLocally(
+  updated
+) {
+
+  const index =
+    goals.findIndex(
+      goal =>
+        goal.id === updated.id
+    );
+
+
+  if (index === -1) {
+
+    goals.push(
+      updated
+    );
+
+  } else {
+
+    goals[index] =
+      updated;
+  }
+
+
+  renderGoals();
+}
+
+
+/* =========================================================
+   GOALS REALTIME
+   ========================================================= */
+
+function subscribeToGoals() {
+
+  if (
+    goalsChannel ||
+    !roomId
+  )
+    return;
+
+
+  goalsChannel =
+    supabaseClient
+      .channel(
+        "goals-" + roomId
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "goals",
+          filter:
+            "room_id=eq." +
+            roomId
+        },
+        payload => {
+
+          if (
+            payload.eventType ===
+            "INSERT"
+          ) {
+
+            const exists =
+              goals.some(
+                goal =>
+                  goal.id ===
+                  payload.new.id
+              );
+
+            if (!exists) {
+
+              goals.push(
+                payload.new
+              );
+            }
+          }
+
+
+          if (
+            payload.eventType ===
+            "UPDATE"
+          ) {
+
+            updateGoalLocally(
+              payload.new
+            );
+
+            return;
+          }
+
+
+          if (
+            payload.eventType ===
+            "DELETE"
+          ) {
+
+            goals =
+              goals.filter(
+                goal =>
+                  goal.id !==
+                  payload.old.id
+              );
+          }
+
+
+          renderGoals();
+        }
+      )
+      .subscribe();
 }
 
 
@@ -1380,65 +2635,89 @@ function editGoal() {
    TIMER
    ========================================================= */
 
-function updateTimerDisplay() {
-  document.getElementById("timer")
-    .textContent =
-    formatTime(timerSeconds);
-}
+function startLocalTimer() {
+
+  if (timerInterval)
+    return;
 
 
-function startLocalTimer(broadcast = true) {
+  timerRunning =
+    true;
 
-  if (timerRunning) return;
+  timerStartedAt =
+    Date.now();
 
-  timerRunning = true;
 
   timerInterval =
-    setInterval(() => {
+    setInterval(
+      () => {
 
-      if (timerSeconds > 0) {
+        if (
+          timerSeconds > 0
+        ) {
 
-        timerSeconds--;
+          timerSeconds--;
 
-        updateTimerDisplay();
+          updateTimerDisplay();
 
-      } else {
+        } else {
 
-        switchTimerMode();
+          switchTimerMode();
+        }
 
-      }
-
-    }, 1000);
-
-  if (broadcast && channel) {
-
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: true
-      }
-    });
-  }
+      },
+      1000
+    );
 }
 
 
 function stopLocalTimer() {
 
-  timerRunning = false;
+  timerRunning =
+    false;
 
   clearInterval(
     timerInterval
   );
 
-  timerInterval = null;
+  timerInterval =
+    null;
+}
+
+
+function broadcastTimer() {
+
+  if (!channel)
+    return;
+
+
+  channel.send({
+    type:
+      "broadcast",
+
+    event:
+      "timer",
+
+    payload: {
+
+      seconds:
+        timerSeconds,
+
+      mode:
+        timerMode,
+
+      running:
+        timerRunning
+    }
+  });
 }
 
 
 function startTimer() {
-  startLocalTimer(true);
+
+  startLocalTimer();
+
+  broadcastTimer();
 }
 
 
@@ -1446,18 +2725,7 @@ function pauseTimer() {
 
   stopLocalTimer();
 
-  if (channel) {
-
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: false
-      }
-    });
-  }
+  broadcastTimer();
 }
 
 
@@ -1465,25 +2733,18 @@ function resetTimer() {
 
   stopLocalTimer();
 
+
   timerSeconds =
-    (timerMode === "focus"
-      ? focusMinutes
-      : breakMinutes) * 60;
+    (
+      timerMode === "focus"
+        ? focusMinutes
+        : breakMinutes
+    ) * 60;
+
 
   updateTimerDisplay();
 
-  if (channel) {
-
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: false
-      }
-    });
-  }
+  broadcastTimer();
 }
 
 
@@ -1491,45 +2752,32 @@ function switchTimerMode() {
 
   stopLocalTimer();
 
-  if (timerMode === "focus") {
 
-    timerMode = "break";
+  if (
+    timerMode === "focus"
+  ) {
+
+    timerMode =
+      "break";
 
     timerSeconds =
       breakMinutes * 60;
 
-    document.getElementById(
-      "timerMode"
-    ).textContent =
-      "break ✦";
-
   } else {
 
-    timerMode = "focus";
+    timerMode =
+      "focus";
 
     timerSeconds =
       focusMinutes * 60;
-
-    document.getElementById(
-      "timerMode"
-    ).textContent =
-      "focus ♡";
   }
+
+
+  updateTimerModeDisplay();
 
   updateTimerDisplay();
 
-  if (channel) {
-
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: false
-      }
-    });
-  }
+  broadcastTimer();
 }
 
 
@@ -1546,25 +2794,12 @@ function setTimer(minutes) {
   timerSeconds =
     focusMinutes * 60;
 
-  document.getElementById(
-    "timerMode"
-  ).textContent =
-    "focus ♡";
+
+  updateTimerModeDisplay();
 
   updateTimerDisplay();
 
-  if (channel) {
-
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: false
-      }
-    });
-  }
+  broadcastTimer();
 }
 
 
@@ -1576,8 +2811,12 @@ function customizeTimer() {
       focusMinutes
     );
 
-  if (focus === null)
+
+  if (
+    focus === null
+  )
     return;
+
 
   const breakTime =
     prompt(
@@ -1585,14 +2824,19 @@ function customizeTimer() {
       breakMinutes
     );
 
-  if (breakTime === null)
+
+  if (
+    breakTime === null
+  )
     return;
+
 
   const f =
     Number(focus);
 
   const b =
     Number(breakTime);
+
 
   if (
     !Number.isFinite(f) ||
@@ -1608,34 +2852,58 @@ function customizeTimer() {
     return;
   }
 
-  focusMinutes = f;
-  breakMinutes = b;
 
-  timerMode = "focus";
+  focusMinutes =
+    f;
+
+  breakMinutes =
+    b;
+
+  timerMode =
+    "focus";
 
   stopLocalTimer();
 
   timerSeconds =
     focusMinutes * 60;
 
-  document.getElementById(
-    "timerMode"
-  ).textContent =
-    "focus ♡";
+
+  updateTimerModeDisplay();
 
   updateTimerDisplay();
 
-  if (channel) {
+  broadcastTimer();
+}
 
-    channel.send({
-      type: "broadcast",
-      event: "timer",
-      payload: {
-        seconds: timerSeconds,
-        mode: timerMode,
-        running: false
-      }
-    });
+
+function applyRemoteTimer(
+  payload
+) {
+
+  stopLocalTimer();
+
+
+  timerSeconds =
+    Number(
+      payload.seconds
+    );
+
+  timerMode =
+    payload.mode === "break"
+      ? "break"
+      : "focus";
+
+
+  updateTimerModeDisplay();
+
+  updateTimerDisplay();
+
+
+  if (
+    payload.running
+  ) {
+
+    startLocalTimer();
   }
 }
 
@@ -1646,7 +2914,7 @@ function customizeTimer() {
 
 updateTimerDisplay();
 
-startCamera();
+updateTimerModeDisplay();
 
 joinRoomFromLink();
 
@@ -1654,4 +2922,3 @@ joinRoomFromLink();
 
 </body>
 </html>
-```
