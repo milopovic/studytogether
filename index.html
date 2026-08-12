@@ -164,26 +164,6 @@ button {
   background: #ead4dc;
 }
 
-.video-placeholder {
-  height: 280px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: white;
-  font-size: 18px;
-
-  background:
-    linear-gradient(145deg, #e7bdca, #d9a8b9);
-}
-
-.video-placeholder span {
-  font-size: 45px;
-  margin-bottom: 5px;
-}
-
 .name {
   position: absolute;
   left: 16px;
@@ -386,6 +366,12 @@ button {
   padding: 15px;
 }
 
+.small-text {
+  font-size: 11px;
+  opacity: .5;
+  margin-top: 14px;
+}
+
 /* CHAT */
 
 .messages {
@@ -506,11 +492,7 @@ footer {
     0 people in the room
   </div>
 
-  <section class="video-area" id="videoArea">
-
-    <!-- Video tiles are created here dynamically -->
-
-  </section>
+  <section class="video-area" id="videoArea"></section>
 
   <div class="status" id="status">
     ✦ create or join a room to begin ✦
@@ -572,8 +554,6 @@ footer {
 
   <section class="bottom-grid">
 
-    <!-- GOALS -->
-
     <div class="card goal-card">
 
       <div class="card-title">
@@ -605,8 +585,6 @@ footer {
       </div>
 
     </div>
-
-    <!-- CHAT -->
 
     <div class="card chat-card">
 
@@ -644,7 +622,6 @@ footer {
 
 </main>
 
-
 <script>
 
 /* =========================================================
@@ -672,7 +649,7 @@ let roomCode = null;
 let roomId = null;
 let myName = null;
 
-let participantId =
+const participantId =
   crypto.randomUUID();
 
 let channel = null;
@@ -689,7 +666,6 @@ let cameraOn = true;
    ========================================================= */
 
 let timerInterval = null;
-
 let timerSeconds = 25 * 60;
 
 let focusMinutes = 25;
@@ -698,15 +674,12 @@ let breakMinutes = 5;
 let timerRunning = false;
 let timerMode = "focus";
 
-let timerStartedAt = null;
-
 
 /* =========================================================
    GOALS
    ========================================================= */
 
 let goals = [];
-
 let goalsChannel = null;
 
 
@@ -718,13 +691,15 @@ function showStatus(text) {
 
   document.getElementById("status")
     .textContent = text;
-
 }
 
 
 function formatTime(seconds) {
 
-  seconds = Math.max(0, Math.floor(seconds));
+  seconds = Math.max(
+    0,
+    Math.floor(seconds)
+  );
 
   const minutes =
     Math.floor(seconds / 60)
@@ -745,7 +720,6 @@ function updateTimerDisplay() {
   document.getElementById("timer")
     .textContent =
     formatTime(timerSeconds);
-
 }
 
 
@@ -756,7 +730,6 @@ function updateTimerModeDisplay() {
     timerMode === "focus"
       ? "focus ♡"
       : "break ✦";
-
 }
 
 
@@ -837,9 +810,7 @@ function createVideoTile(
 
     mic.id = "micBtn";
     mic.textContent = "🎙️";
-
-    mic.onclick =
-      toggleMic;
+    mic.onclick = toggleMic;
 
 
     const camera =
@@ -847,14 +818,11 @@ function createVideoTile(
 
     camera.id = "cameraBtn";
     camera.textContent = "📷";
-
-    camera.onclick =
-      toggleCamera;
+    camera.onclick = toggleCamera;
 
 
     controls.appendChild(mic);
     controls.appendChild(camera);
-
   }
 
 
@@ -864,7 +832,6 @@ function createVideoTile(
 
   document.getElementById("videoArea")
     .appendChild(card);
-
 
   return card;
 }
@@ -946,28 +913,21 @@ function toggleMic() {
     return;
 
   const track =
-    localStream
-      .getAudioTracks()[0];
+    localStream.getAudioTracks()[0];
 
   if (!track)
     return;
 
   micOn = !micOn;
 
-  track.enabled =
-    micOn;
+  track.enabled = micOn;
 
   const button =
-    document.getElementById(
-      "micBtn"
-    );
+    document.getElementById("micBtn");
 
   if (button) {
-
     button.textContent =
-      micOn
-        ? "🎙️"
-        : "🔇";
+      micOn ? "🎙️" : "🔇";
   }
 }
 
@@ -978,28 +938,21 @@ function toggleCamera() {
     return;
 
   const track =
-    localStream
-      .getVideoTracks()[0];
+    localStream.getVideoTracks()[0];
 
   if (!track)
     return;
 
   cameraOn = !cameraOn;
 
-  track.enabled =
-    cameraOn;
+  track.enabled = cameraOn;
 
   const button =
-    document.getElementById(
-      "cameraBtn"
-    );
+    document.getElementById("cameraBtn");
 
   if (button) {
-
     button.textContent =
-      cameraOn
-        ? "📷"
-        : "🚫";
+      cameraOn ? "📷" : "🚫";
   }
 }
 
@@ -1011,15 +964,12 @@ function toggleCamera() {
 async function createRoom() {
 
   const name =
-    prompt(
-      "What's your name? ♡"
-    );
+    prompt("What's your name? ♡");
 
   if (!name || !name.trim())
     return;
 
-  myName =
-    name.trim();
+  myName = name.trim();
 
 
   const generatedCode =
@@ -1029,7 +979,10 @@ async function createRoom() {
       .toUpperCase();
 
 
-  const { data: room, error } =
+  const {
+    data: room,
+    error
+  } =
     await supabaseClient
       .from("rooms")
       .insert([{
@@ -1045,44 +998,19 @@ async function createRoom() {
 
   if (error) {
 
-    console.error(error);
+    console.error("Create room error:", error);
 
     alert(
-      "Something went wrong creating the room ♡"
+      "Something went wrong creating the room ♡\n\n" +
+      error.message
     );
 
     return;
   }
 
 
-  const { error: participantError } =
-    await supabaseClient
-      .from("participants")
-      .insert([{
-        room_id: room.id,
-        name: myName
-      }]);
-
-
-  if (participantError) {
-
-    console.error(
-      participantError
-    );
-
-    alert(
-      "The room was created, but we couldn't register you ♡"
-    );
-
-    return;
-  }
-
-
-  roomCode =
-    generatedCode;
-
-  roomId =
-    room.id;
+  roomCode = generatedCode;
+  roomId = room.id;
 
 
   sessionStorage.setItem(
@@ -1123,9 +1051,7 @@ async function createRoom() {
 
   document.getElementById(
     "inviteBox"
-  ).classList.add(
-    "visible"
-  );
+  ).classList.add("visible");
 
 
   history.replaceState(
@@ -1156,8 +1082,6 @@ async function joinRoomFromLink() {
 
   if (!code) {
 
-    await startCamera();
-
     return;
   }
 
@@ -1166,18 +1090,23 @@ async function joinRoomFromLink() {
     code.toUpperCase();
 
 
-  const { data: room, error } =
+  const {
+    data: room,
+    error
+  } =
     await supabaseClient
       .from("rooms")
       .select("*")
-      .eq(
-        "room_code",
-        upperCode
-      )
+      .eq("room_code", upperCode)
       .single();
 
 
   if (error || !room) {
+
+    console.error(
+      "Room lookup error:",
+      error
+    );
 
     alert(
       "We couldn't find that study room ♡"
@@ -1187,11 +1116,8 @@ async function joinRoomFromLink() {
   }
 
 
-  roomCode =
-    upperCode;
-
-  roomId =
-    room.id;
+  roomCode = upperCode;
+  roomId = room.id;
 
 
   const savedName =
@@ -1210,8 +1136,7 @@ async function joinRoomFromLink() {
     savedRoom === upperCode
   ) {
 
-    myName =
-      savedName;
+    myName = savedName;
 
   } else {
 
@@ -1223,8 +1148,7 @@ async function joinRoomFromLink() {
     if (!name || !name.trim())
       return;
 
-    myName =
-      name.trim();
+    myName = name.trim();
 
 
     sessionStorage.setItem(
@@ -1236,29 +1160,6 @@ async function joinRoomFromLink() {
       "studyTogetherRoom",
       upperCode
     );
-
-
-    const { error: joinError } =
-      await supabaseClient
-        .from("participants")
-        .insert([{
-          room_id: room.id,
-          name: myName
-        }]);
-
-
-    if (joinError) {
-
-      console.error(
-        joinError
-      );
-
-      alert(
-        "We couldn't add you to the room ♡"
-      );
-
-      return;
-    }
   }
 
 
@@ -1270,9 +1171,7 @@ async function joinRoomFromLink() {
 
   document.getElementById(
     "inviteBox"
-  ).classList.remove(
-    "visible"
-  );
+  ).classList.remove("visible");
 
 
   await enterRoom();
@@ -1313,14 +1212,11 @@ async function enterRoom() {
 
   channel.on(
     "presence",
-    {
-      event: "sync"
-    },
+    { event: "sync" },
     async () => {
 
       const state =
         channel.presenceState();
-
 
       const people = [];
 
@@ -1329,9 +1225,7 @@ async function enterRoom() {
         .forEach(
           ([key, entries]) => {
 
-            if (
-              key === participantId
-            )
+            if (key === participantId)
               return;
 
             const person =
@@ -1350,9 +1244,7 @@ async function enterRoom() {
         );
 
 
-      /*
-       * Remove people who are no longer present.
-       */
+      /* Remove people who left */
 
       for (
         const [id, peer] of peers
@@ -1366,9 +1258,7 @@ async function enterRoom() {
 
         if (!stillHere) {
 
-          if (
-            peer.connection
-          ) {
+          if (peer.connection) {
             peer.connection.close();
           }
 
@@ -1379,9 +1269,7 @@ async function enterRoom() {
       }
 
 
-      /*
-       * Create connections for everyone.
-       */
+      /* Connect to everybody */
 
       for (const person of people) {
 
@@ -1411,18 +1299,14 @@ async function enterRoom() {
   );
 
 
-  /* SIGNALING */
+  /* OFFER */
 
   channel.on(
     "broadcast",
-    {
-      event: "offer"
-    },
+    { event: "offer" },
     async ({ payload }) => {
 
-      if (
-        payload.to !== participantId
-      )
+      if (payload.to !== participantId)
         return;
 
       await handleOffer(
@@ -1434,22 +1318,18 @@ async function enterRoom() {
   );
 
 
+  /* ANSWER */
+
   channel.on(
     "broadcast",
-    {
-      event: "answer"
-    },
+    { event: "answer" },
     async ({ payload }) => {
 
-      if (
-        payload.to !== participantId
-      )
+      if (payload.to !== participantId)
         return;
 
       const peer =
-        peers.get(
-          payload.from
-        );
+        peers.get(payload.from);
 
       if (!peer)
         return;
@@ -1474,22 +1354,18 @@ async function enterRoom() {
   );
 
 
+  /* ICE */
+
   channel.on(
     "broadcast",
-    {
-      event: "ice"
-    },
+    { event: "ice" },
     async ({ payload }) => {
 
-      if (
-        payload.to !== participantId
-      )
+      if (payload.to !== participantId)
         return;
 
       const peer =
-        peers.get(
-          payload.from
-        );
+        peers.get(payload.from);
 
       if (!peer)
         return;
@@ -1518,9 +1394,7 @@ async function enterRoom() {
 
   channel.on(
     "broadcast",
-    {
-      event: "chat"
-    },
+    { event: "chat" },
     ({ payload }) => {
 
       addMessage(
@@ -1535,69 +1409,58 @@ async function enterRoom() {
 
   channel.on(
     "broadcast",
-    {
-      event: "timer"
-    },
+    { event: "timer" },
     ({ payload }) => {
 
-      applyRemoteTimer(
-        payload
-      );
+      applyRemoteTimer(payload);
     }
   );
 
 
-  await channel.subscribe(
-    async status => {
+  const subscribeResult =
+    await channel.subscribe(
+      async status => {
 
-      if (
-        status !== "SUBSCRIBED"
-      )
-        return;
+        if (status !== "SUBSCRIBED") {
 
+          console.error(
+            "Realtime subscription status:",
+            status
+          );
 
-      await channel.track({
-        name: myName
-      });
-
-
-      showStatus(
-        "you're in the room ♡"
-      );
+          return;
+        }
 
 
-      await loadGoals();
+        await channel.track({
+          name: myName
+        });
 
-      subscribeToGoals();
-    }
-  );
+
+        showStatus(
+          "you're in the room ♡"
+        );
+
+
+        await loadGoals();
+
+        subscribeToGoals();
+      }
+    );
+
+
+  return subscribeResult;
 }
 
 
 /* =========================================================
-   WEBRTC MULTI-PERSON
+   WEBRTC
    ========================================================= */
 
-async function ensurePeer(
+function makePeerConnection(
   id,
   name
 ) {
-
-  if (id === participantId)
-    return;
-
-
-  if (peers.has(id)) {
-
-    const existing =
-      peers.get(id);
-
-    existing.name =
-      name;
-
-    return;
-  }
-
 
   const connection =
     new RTCPeerConnection({
@@ -1618,31 +1481,20 @@ async function ensurePeer(
 
     localStream
       .getTracks()
-      .forEach(
-        track => {
+      .forEach(track => {
 
-          connection.addTrack(
-            track,
-            localStream
-          );
-
-        }
-      );
+        connection.addTrack(
+          track,
+          localStream
+        );
+      });
   }
 
 
   const peer = {
     connection,
-    name,
-    makingOffer: false,
-    candidateQueue: []
+    name
   };
-
-
-  peers.set(
-    id,
-    peer
-  );
 
 
   connection.ontrack =
@@ -1658,9 +1510,7 @@ async function ensurePeer(
         false
       );
 
-      showStatus(
-        `${name} joined the study room ♡`
-      );
+      updatePeopleCount();
     };
 
 
@@ -1678,55 +1528,85 @@ async function ensurePeer(
         type: "broadcast",
         event: "ice",
         payload: {
-          from:
-            participantId,
+          from: participantId,
           to: id,
-          candidate:
-            event.candidate
+          candidate: event.candidate
         }
       });
     };
 
 
-  /*
-   * Deterministic rule:
-   * the participant with the smaller ID
-   * creates the offer.
-   *
-   * This prevents both sides from creating
-   * competing offers.
-   */
+  connection.onconnectionstatechange =
+    () => {
 
-  if (
-    participantId < id
-  ) {
+      const state =
+        connection.connectionState;
+
+      if (
+        state === "failed" ||
+        state === "closed"
+      ) {
+
+        peers.delete(id);
+
+        removeVideoTile(id);
+
+        updatePeopleCount();
+      }
+    };
+
+
+  peers.set(id, peer);
+
+  return peer;
+}
+
+
+async function ensurePeer(
+  id,
+  name
+) {
+
+  if (id === participantId)
+    return;
+
+  if (peers.has(id))
+    return;
+
+
+  const peer =
+    makePeerConnection(
+      id,
+      name
+    );
+
+
+  /*
+    Smaller participant ID creates offer.
+    This prevents both people from making
+    simultaneous offers.
+  */
+
+  if (participantId < id) {
 
     try {
 
-      peer.makingOffer =
-        true;
-
       const offer =
-        await connection
+        await peer.connection
           .createOffer();
 
-      await connection
-        .setLocalDescription(
-          offer
-        );
+      await peer.connection
+        .setLocalDescription(offer);
 
 
       await channel.send({
         type: "broadcast",
         event: "offer",
         payload: {
-          from:
-            participantId,
-          to:
-            id,
-          name:
-            myName,
-          offer
+          from: participantId,
+          to: id,
+          name: myName,
+          offer: offer
         }
       });
 
@@ -1736,11 +1616,6 @@ async function ensurePeer(
         "Offer error:",
         error
       );
-
-    } finally {
-
-      peer.makingOffer =
-        false;
     }
   }
 }
@@ -1758,87 +1633,11 @@ async function handleOffer(
 
   if (!peer) {
 
-    const connection =
-      new RTCPeerConnection({
-        iceServers: [
-          {
-            urls:
-              "stun:stun.l.google.com:19302"
-          },
-          {
-            urls:
-              "stun:stun1.l.google.com:19302"
-          }
-        ]
-      });
-
-
-    if (localStream) {
-
-      localStream
-        .getTracks()
-        .forEach(
-          track => {
-
-            connection.addTrack(
-              track,
-              localStream
-            );
-
-          }
-        );
-    }
-
-
-    peer = {
-      connection,
-      name,
-      makingOffer: false,
-      candidateQueue: []
-    };
-
-
-    peers.set(
-      from,
-      peer
-    );
-
-
-    connection.ontrack =
-      event => {
-
-        createVideoTile(
-          from,
-          name,
-          event.streams[0],
-          false
-        );
-
-        updatePeopleCount();
-      };
-
-
-    connection.onicecandidate =
-      async event => {
-
-        if (
-          !event.candidate
-        )
-          return;
-
-        await channel.send({
-          type: "broadcast",
-          event: "ice",
-          payload: {
-            from:
-              participantId,
-            to:
-              from,
-            candidate:
-              event.candidate
-          }
-        });
-      };
+    peer =
+      makePeerConnection(
+        from,
+        name
+      );
   }
 
 
@@ -1858,23 +1657,18 @@ async function handleOffer(
 
 
     await peer.connection
-      .setLocalDescription(
-        answer
-      );
+      .setLocalDescription(answer);
 
 
     await channel.send({
       type: "broadcast",
       event: "answer",
       payload: {
-        from:
-          participantId,
-        to:
-          from,
-        answer
+        from: participantId,
+        to: from,
+        answer: answer
       }
     });
-
 
   } catch (error) {
 
@@ -1901,9 +1695,7 @@ async function copyInvite() {
   try {
 
     await navigator.clipboard
-      .writeText(
-        input.value
-      );
+      .writeText(input.value);
 
 
     const button =
@@ -1916,27 +1708,19 @@ async function copyInvite() {
       "copied ♡";
 
 
-    setTimeout(
-      () => {
+    setTimeout(() => {
 
-        button.textContent =
-          "copy invite link ♡";
+      button.textContent =
+        "copy invite link ♡";
 
-      },
-      1800
-    );
-
+    }, 1800);
 
   } catch {
 
     input.focus();
-
     input.select();
 
-    document.execCommand(
-      "copy"
-    );
-
+    document.execCommand("copy");
 
     alert(
       "Invite link copied ♡"
@@ -1961,25 +1745,17 @@ function addMessage(
 
 
   const p =
-    document.createElement(
-      "p"
-    );
+    document.createElement("p");
 
 
   const bold =
-    document.createElement(
-      "b"
-    );
-
+    document.createElement("b");
 
   bold.textContent =
     name + ":";
 
 
-  p.appendChild(
-    bold
-  );
-
+  p.appendChild(bold);
 
   p.appendChild(
     document.createTextNode(
@@ -1988,10 +1764,7 @@ function addMessage(
   );
 
 
-  container.appendChild(
-    p
-  );
-
+  container.appendChild(p);
 
   container.scrollTop =
     container.scrollHeight;
@@ -2027,15 +1800,13 @@ async function sendMessage() {
     type: "broadcast",
     event: "chat",
     payload: {
-      name:
-        myName,
-      message
+      name: myName,
+      message: message
     }
   });
 
 
-  input.value =
-    "";
+  input.value = "";
 }
 
 
@@ -2056,15 +1827,10 @@ async function loadGoals() {
     await supabaseClient
       .from("goals")
       .select("*")
-      .eq(
-        "room_id",
-        roomId
-      )
+      .eq("room_id", roomId)
       .order(
         "created_at",
-        {
-          ascending: true
-        }
+        { ascending: true }
       );
 
 
@@ -2075,13 +1841,20 @@ async function loadGoals() {
       error
     );
 
+    /*
+      If this happens, the problem is
+      definitely Supabase RLS/table setup.
+    */
+
+    showStatus(
+      "couldn't load shared goals — check Supabase permissions ♡"
+    );
+
     return;
   }
 
 
-  goals =
-    data || [];
-
+  goals = data || [];
 
   renderGoals();
 }
@@ -2095,16 +1868,13 @@ function renderGoals() {
     );
 
 
-  list.innerHTML =
-    "";
+  list.innerHTML = "";
 
 
   if (!goals.length) {
 
     const empty =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     empty.className =
       "no-goals";
@@ -2112,174 +1882,127 @@ function renderGoals() {
     empty.textContent =
       "No goals yet ♡ Add one above!";
 
-    list.appendChild(
-      empty
-    );
+    list.appendChild(empty);
 
     return;
   }
 
 
-  goals.forEach(
-    goal => {
+  goals.forEach(goal => {
 
-      const item =
-        document.createElement(
-          "div"
-        );
+    const item =
+      document.createElement("div");
 
-      item.className =
-        "goal-item";
+    item.className =
+      "goal-item";
 
 
-      const checkbox =
-        document.createElement(
-          "button"
-        );
+    const checkbox =
+      document.createElement("button");
 
-      checkbox.className =
-        "goal-checkbox" +
-        (
-          goal.completed
-            ? " completed"
-            : ""
-        );
-
-      checkbox.textContent =
+    checkbox.className =
+      "goal-checkbox" +
+      (
         goal.completed
-          ? "✓"
-          : "";
+          ? " completed"
+          : ""
+      );
+
+    checkbox.textContent =
+      goal.completed
+        ? "✓"
+        : "";
 
 
-      checkbox.onclick =
-        () => toggleGoal(
-          goal
-        );
+    checkbox.onclick =
+      () => toggleGoal(goal);
 
 
-      const content =
-        document.createElement(
-          "div"
-        );
+    const content =
+      document.createElement("div");
 
-      content.className =
-        "goal-content";
+    content.className =
+      "goal-content";
 
 
-      const text =
-        document.createElement(
-          "div"
-        );
+    const text =
+      document.createElement("div");
 
-      text.className =
-        "goal-text" +
-        (
-          goal.completed
-            ? " completed"
-            : ""
-        );
+    text.className =
+      "goal-text" +
+      (
+        goal.completed
+          ? " completed"
+          : ""
+      );
 
-      text.textContent =
-        goal.text;
+    text.textContent =
+      goal.text;
 
+
+    content.appendChild(text);
+
+
+    if (
+      goal.completed &&
+      goal.completed_by
+    ) {
+
+      const completedBy =
+        document.createElement("div");
+
+      completedBy.className =
+        "goal-completed-by";
+
+      completedBy.textContent =
+        `✓ completed by ${goal.completed_by}`;
 
       content.appendChild(
-        text
-      );
-
-
-      if (
-        goal.completed &&
-        goal.completed_by
-      ) {
-
-        const completedBy =
-          document.createElement(
-            "div"
-          );
-
-        completedBy.className =
-          "goal-completed-by";
-
-        completedBy.textContent =
-          `✓ completed by ${goal.completed_by}`;
-
-        content.appendChild(
-          completedBy
-        );
-      }
-
-
-      const actions =
-        document.createElement(
-          "div"
-        );
-
-      actions.className =
-        "goal-actions";
-
-
-      const edit =
-        document.createElement(
-          "button"
-        );
-
-      edit.textContent =
-        "✎";
-
-      edit.title =
-        "Edit goal";
-
-      edit.onclick =
-        () => editGoal(
-          goal
-        );
-
-
-      const remove =
-        document.createElement(
-          "button"
-        );
-
-      remove.textContent =
-        "×";
-
-      remove.title =
-        "Delete goal";
-
-      remove.onclick =
-        () => deleteGoal(
-          goal
-        );
-
-
-      actions.appendChild(
-        edit
-      );
-
-      actions.appendChild(
-        remove
-      );
-
-
-      item.appendChild(
-        checkbox
-      );
-
-      item.appendChild(
-        content
-      );
-
-      item.appendChild(
-        actions
-      );
-
-
-      list.appendChild(
-        item
+        completedBy
       );
     }
-  );
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "goal-actions";
+
+
+    const edit =
+      document.createElement("button");
+
+    edit.textContent = "✎";
+
+    edit.title = "Edit goal";
+
+    edit.onclick =
+      () => editGoal(goal);
+
+
+    const remove =
+      document.createElement("button");
+
+    remove.textContent = "×";
+
+    remove.title = "Delete goal";
+
+    remove.onclick =
+      () => deleteGoal(goal);
+
+
+    actions.appendChild(edit);
+    actions.appendChild(remove);
+
+
+    item.appendChild(checkbox);
+    item.appendChild(content);
+    item.appendChild(actions);
+
+
+    list.appendChild(item);
+  });
 }
 
 
@@ -2309,71 +2032,62 @@ async function addGoal() {
     return;
 
 
+  /*
+    IMPORTANT:
+    We insert first and don't require
+    a SELECT permission to consider it
+    successful.
+
+    This avoids the common Supabase RLS
+    problem where INSERT succeeds but
+    .select().single() fails.
+  */
+
   const {
-    data,
     error
   } =
     await supabaseClient
       .from("goals")
-      .insert([{
-        room_id:
-          roomId,
-        text:
-          text,
-        completed:
-          false,
-        completed_by:
-          null
-      }])
-      .select()
-      .single();
+      .insert({
+        room_id: roomId,
+        text: text,
+        completed: false,
+        completed_by: null
+      });
 
 
   if (error) {
 
     console.error(
-      "Add goal error:",
+      "ADD GOAL SUPABASE ERROR:",
       error
     );
 
+
     alert(
-      "Couldn't add that goal ♡"
+      "Couldn't add that goal ♡\n\n" +
+      error.message
     );
 
     return;
   }
 
 
-  input.value =
-    "";
+  input.value = "";
 
 
   /*
-   * Realtime will update everyone.
-   * We also update ourselves immediately.
-   */
+    Realtime normally adds it for us.
+    Reloading also makes sure it appears
+    immediately even if Realtime isn't
+    configured yet.
+  */
 
-  const exists =
-    goals.some(
-      goal =>
-        goal.id === data.id
-    );
-
-
-  if (!exists) {
-
-    goals.push(
-      data
-    );
-
-    renderGoals();
-  }
+  await loadGoals();
 }
 
 
-async function toggleGoal(
-  goal
-) {
+async function toggleGoal(goal) {
 
   const completed =
     !goal.completed;
@@ -2386,16 +2100,13 @@ async function toggleGoal(
     await supabaseClient
       .from("goals")
       .update({
-        completed,
+        completed: completed,
         completed_by:
           completed
             ? myName
             : null
       })
-      .eq(
-        "id",
-        goal.id
-      )
+      .eq("id", goal.id)
       .select()
       .single();
 
@@ -2407,19 +2118,20 @@ async function toggleGoal(
       error
     );
 
+    alert(
+      "Couldn't update that goal ♡\n\n" +
+      error.message
+    );
+
     return;
   }
 
 
-  updateGoalLocally(
-    data
-  );
+  updateGoalLocally(data);
 }
 
 
-async function editGoal(
-  goal
-) {
+async function editGoal(goal) {
 
   const text =
     prompt(
@@ -2442,13 +2154,9 @@ async function editGoal(
     await supabaseClient
       .from("goals")
       .update({
-        text:
-          text.trim()
+        text: text.trim()
       })
-      .eq(
-        "id",
-        goal.id
-      )
+      .eq("id", goal.id)
       .select()
       .single();
 
@@ -2460,19 +2168,20 @@ async function editGoal(
       error
     );
 
+    alert(
+      "Couldn't edit that goal ♡\n\n" +
+      error.message
+    );
+
     return;
   }
 
 
-  updateGoalLocally(
-    data
-  );
+  updateGoalLocally(data);
 }
 
 
-async function deleteGoal(
-  goal
-) {
+async function deleteGoal(goal) {
 
   const yes =
     confirm(
@@ -2490,10 +2199,7 @@ async function deleteGoal(
     await supabaseClient
       .from("goals")
       .delete()
-      .eq(
-        "id",
-        goal.id
-      );
+      .eq("id", goal.id);
 
 
   if (error) {
@@ -2501,6 +2207,11 @@ async function deleteGoal(
     console.error(
       "Goal delete error:",
       error
+    );
+
+    alert(
+      "Couldn't delete that goal ♡\n\n" +
+      error.message
     );
 
     return;
@@ -2518,9 +2229,7 @@ async function deleteGoal(
 }
 
 
-function updateGoalLocally(
-  updated
-) {
+function updateGoalLocally(updated) {
 
   const index =
     goals.findIndex(
@@ -2531,14 +2240,11 @@ function updateGoalLocally(
 
   if (index === -1) {
 
-    goals.push(
-      updated
-    );
+    goals.push(updated);
 
   } else {
 
-    goals[index] =
-      updated;
+    goals[index] = updated;
   }
 
 
@@ -2571,8 +2277,7 @@ function subscribeToGoals() {
           schema: "public",
           table: "goals",
           filter:
-            "room_id=eq." +
-            roomId
+            "room_id=eq." + roomId
         },
         payload => {
 
@@ -2641,47 +2346,34 @@ function startLocalTimer() {
     return;
 
 
-  timerRunning =
-    true;
-
-  timerStartedAt =
-    Date.now();
+  timerRunning = true;
 
 
   timerInterval =
-    setInterval(
-      () => {
+    setInterval(() => {
 
-        if (
-          timerSeconds > 0
-        ) {
+      if (timerSeconds > 0) {
 
-          timerSeconds--;
+        timerSeconds--;
 
-          updateTimerDisplay();
+        updateTimerDisplay();
 
-        } else {
+      } else {
 
-          switchTimerMode();
-        }
+        switchTimerMode();
+      }
 
-      },
-      1000
-    );
+    }, 1000);
 }
 
 
 function stopLocalTimer() {
 
-  timerRunning =
-    false;
+  timerRunning = false;
 
-  clearInterval(
-    timerInterval
-  );
+  clearInterval(timerInterval);
 
-  timerInterval =
-    null;
+  timerInterval = null;
 }
 
 
@@ -2692,22 +2384,12 @@ function broadcastTimer() {
 
 
   channel.send({
-    type:
-      "broadcast",
-
-    event:
-      "timer",
-
+    type: "broadcast",
+    event: "timer",
     payload: {
-
-      seconds:
-        timerSeconds,
-
-      mode:
-        timerMode,
-
-      running:
-        timerRunning
+      seconds: timerSeconds,
+      mode: timerMode,
+      running: timerRunning
     }
   });
 }
@@ -2753,20 +2435,16 @@ function switchTimerMode() {
   stopLocalTimer();
 
 
-  if (
-    timerMode === "focus"
-  ) {
+  if (timerMode === "focus") {
 
-    timerMode =
-      "break";
+    timerMode = "break";
 
     timerSeconds =
       breakMinutes * 60;
 
   } else {
 
-    timerMode =
-      "focus";
+    timerMode = "focus";
 
     timerSeconds =
       focusMinutes * 60;
@@ -2786,8 +2464,7 @@ function setTimer(minutes) {
   focusMinutes =
     Number(minutes);
 
-  timerMode =
-    "focus";
+  timerMode = "focus";
 
   stopLocalTimer();
 
@@ -2812,9 +2489,7 @@ function customizeTimer() {
     );
 
 
-  if (
-    focus === null
-  )
+  if (focus === null)
     return;
 
 
@@ -2825,17 +2500,12 @@ function customizeTimer() {
     );
 
 
-  if (
-    breakTime === null
-  )
+  if (breakTime === null)
     return;
 
 
-  const f =
-    Number(focus);
-
-  const b =
-    Number(breakTime);
+  const f = Number(focus);
+  const b = Number(breakTime);
 
 
   if (
@@ -2853,14 +2523,10 @@ function customizeTimer() {
   }
 
 
-  focusMinutes =
-    f;
+  focusMinutes = f;
+  breakMinutes = b;
 
-  breakMinutes =
-    b;
-
-  timerMode =
-    "focus";
+  timerMode = "focus";
 
   stopLocalTimer();
 
@@ -2876,17 +2542,14 @@ function customizeTimer() {
 }
 
 
-function applyRemoteTimer(
-  payload
-) {
+function applyRemoteTimer(payload) {
 
   stopLocalTimer();
 
 
   timerSeconds =
-    Number(
-      payload.seconds
-    );
+    Number(payload.seconds);
+
 
   timerMode =
     payload.mode === "break"
@@ -2899,10 +2562,7 @@ function applyRemoteTimer(
   updateTimerDisplay();
 
 
-  if (
-    payload.running
-  ) {
-
+  if (payload.running) {
     startLocalTimer();
   }
 }
