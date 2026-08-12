@@ -1,736 +1,1657 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>studytogether ♡</title>
+<title>StudyTogether ♡</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
 
-  <style>
+:root {
+  --pink: #e8a9bd;
+  --dark-pink: #b96782;
+  --light-pink: #fff1f5;
+  --cream: #fffaf8;
+  --text: #59444c;
+  --soft: #f8dce5;
+  --white: rgba(255,255,255,.82);
+  --shadow: 0 12px 35px rgba(160,90,115,.12);
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.7), transparent 25%),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,.5), transparent 25%),
-        #ead0d7;
-      color: #4b343b;
-      font-family: "DM Sans", sans-serif;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #ffe1eb 0, transparent 25%),
+    radial-gradient(circle at 90% 20%, #f9d5e2 0, transparent 25%),
+    linear-gradient(135deg, #fff9fa, #fff0f4);
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .12;
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    }
+button,
+input,
+textarea {
+  font: inherit;
+}
 
-    .page {
-      width: min(1100px, 92%);
-      margin: auto;
-      padding: 35px 0 25px;
-    }
+button {
+  border: 0;
+  cursor: pointer;
+}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .logo {
-      font-family: "Playfair Display", serif;
-      font-size: 28px;
-      font-style: italic;
-    }
-
-    .room-name {
-      font-size: 13px;
-      opacity: .7;
-    }
-.room-controls {
+.top {
+  max-width: 1100px;
+  margin: auto;
+  padding: 35px 22px 15px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+
+.logo {
+  font-family: "Playfair Display", serif;
+  font-size: 31px;
+  font-style: italic;
+}
+
+.logo span {
+  color: var(--dark-pink);
+}
+
+.room-name {
+  font-size: 13px;
+  opacity: .7;
+  margin-top: 5px;
+}
+
+.create-btn {
+  background: var(--dark-pink);
+  color: white;
+  border-radius: 999px;
+  padding: 12px 20px;
+  box-shadow: var(--shadow);
+}
+
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 10px 22px 50px;
+}
+
+.video-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.video-card {
+  position: relative;
+  min-height: 280px;
+  background: #ead4dc;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.video-card video {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  background: #ead4dc;
+}
+
+.video-placeholder {
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  background:
+    linear-gradient(145deg, #e7bdca, #d9a8b9);
+}
+
+.video-placeholder span {
+  font-size: 45px;
+  margin-bottom: 5px;
+}
+
+.name {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  background: rgba(255,255,255,.82);
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.video-controls {
+  position: absolute;
+  right: 13px;
+  bottom: 13px;
+  display: flex;
+  gap: 7px;
+}
+
+.video-controls button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.85);
+}
+
+.timer-card,
+.card {
+  background: var(--white);
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 25px;
+  box-shadow: var(--shadow);
+}
+
+.timer-card {
+  margin-top: 18px;
+  padding: 28px;
+  text-align: center;
+}
+
+.timer-label {
+  color: var(--dark-pink);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+#timer {
+  font-size: clamp(60px, 10vw, 95px);
+  font-weight: 500;
+  letter-spacing: -4px;
+  margin: 12px 0 0;
+}
+
+.timer-mode {
+  opacity: .65;
+  margin-bottom: 17px;
+}
+
+.timer-buttons,
+.presets {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.timer-buttons button,
+.presets button {
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--text);
+}
+
+.timer-buttons button:first-child {
+  background: var(--dark-pink);
+  color: white;
+}
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.card {
+  padding: 22px;
+}
+
+.card-title {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 21px;
+  margin-bottom: 18px;
+}
+
+.goal {
+  display: flex;
   gap: 12px;
+  align-items: center;
 }
 
-.room-controls button {
-  font-size: 11px;
-  padding: 8px 14px;
+.goal-text {
+  flex: 1;
+  line-height: 1.5;
 }
-    main {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
 
-    .video-area {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
+.goal button {
+  background: var(--soft);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
 
-    .video-card {
-      background: rgba(255,255,255,.35);
-      border: 1px solid rgba(255,255,255,.65);
-      border-radius: 24px;
-      padding: 12px;
-      box-shadow: 0 10px 30px rgba(105,60,72,.08);
-    }
+.goal-line {
+  height: 1px;
+  background: #efd6de;
+  margin: 18px 0;
+}
 
-    .video-placeholder {
-      height: 270px;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, #d7aeb9, #c996a5);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      box-shadow: inset 0 0 50px rgba(80,30,45,.08);
-    }
+.small-text {
+  font-size: 13px;
+  opacity: .6;
+}
 
-    .video-placeholder span {
-      font-size: 38px;
-    }
+.messages {
+  min-height: 130px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
 
-    .video-placeholder p {
-      margin: 8px 0 0;
-      font-size: 13px;
-      opacity: .9;
-    }
+.messages p {
+  background: #fff1f5;
+  padding: 8px 11px;
+  border-radius: 13px;
+  margin: 7px 0;
+  font-size: 13px;
+}
 
-    .name {
-      padding: 10px 4px 3px;
-      font-size: 13px;
-    }
+.chat-input {
+  display: flex;
+  gap: 7px;
+  margin-top: 15px;
+}
 
-    .timer-card {
-      text-align: center;
-      padding: 35px;
-      background: rgba(255,248,250,.62);
-      border: 1px solid rgba(255,255,255,.8);
-      border-radius: 28px;
-      box-shadow: 0 15px 40px rgba(105,60,72,.09);
-    }
+.chat-input input {
+  flex: 1;
+  border: 1px solid #efd6de;
+  border-radius: 999px;
+  padding: 10px 14px;
+  outline: none;
+  background: white;
+}
 
-    .timer-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      opacity: .55;
-    }
+.chat-input button {
+  width: 40px;
+  border-radius: 50%;
+  background: var(--dark-pink);
+  color: white;
+}
 
-    #timer {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(70px, 12vw, 120px);
-      line-height: 1;
-      margin: 15px 0 5px;
-      color: #583b43;
-    }
+.invite-box {
+  display: none;
+  margin: 18px 0;
+  padding: 20px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #f0d4de;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
 
-    .timer-mode {
-      font-size: 13px;
-      font-style: italic;
-      opacity: .6;
-      margin-bottom: 22px;
-    }
+.invite-box.visible {
+  display: block;
+}
 
-    button {
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      color: #573b43;
-      background: #f3dce2;
-      padding: 10px 18px;
-      border-radius: 50px;
-      transition: .2s ease;
-    }
+.invite-title {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 21px;
+}
 
-    button:hover {
-      transform: translateY(-2px);
-      background: #e7c3cd;
-    }
+.invite-code {
+  font-size: 25px;
+  letter-spacing: 4px;
+  margin: 10px 0;
+  color: var(--dark-pink);
+}
 
-    .timer-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
+.invite-link {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #efd6de;
+  border-radius: 12px;
+  background: #fffafa;
+  margin-bottom: 9px;
+}
 
-    .timer-buttons button:first-child {
-      background: #9d6676;
-      color: white;
-      padding-left: 25px;
-      padding-right: 25px;
-    }
+.copy-btn {
+  background: var(--dark-pink);
+  color: white;
+  border-radius: 999px;
+  padding: 10px 17px;
+}
 
-    .presets {
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
+.status {
+  text-align: center;
+  font-size: 12px;
+  opacity: .55;
+  margin: 14px;
+}
 
-    .presets button {
-      font-size: 11px;
-      padding: 7px 12px;
-      background: transparent;
-      border: 1px solid rgba(120,75,90,.15);
-    }
+footer {
+  text-align: center;
+  margin-top: 30px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  opacity: .6;
+}
 
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
+@media(max-width: 700px) {
+  .video-area,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .card {
-      background: rgba(255,248,250,.55);
-      border: 1px solid rgba(255,255,255,.7);
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(105,60,72,.07);
-    }
+  .top {
+    align-items: flex-start;
+    gap: 15px;
+  }
 
-    .card-title {
-      font-family: "Playfair Display", serif;
-      font-style: italic;
-      font-size: 19px;
-      margin-bottom: 18px;
-    }
-
-    .goal {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .goal-text {
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .goal button {
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    .goal-line {
-      height: 1px;
-      background: rgba(100,60,70,.12);
-      margin: 18px 0 12px;
-    }
-
-    .small-text {
-      font-size: 11px;
-      opacity: .55;
-    }
-
-    .messages {
-      min-height: 120px;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .messages p {
-      margin: 5px 0;
-    }
-
-    .chat-input {
-      display: flex;
-      gap: 7px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: rgba(255,255,255,.65);
-      border-radius: 50px;
-      padding: 11px 15px;
-      font-family: inherit;
-      color: #4b343b;
-    }
-
-    .chat-input button {
-      padding: 8px 14px;
-    }
-
-    footer {
-      text-align: center;
-      font-family: "Playfair Display", serif;
-      font-style: italic;
-      font-size: 12px;
-      opacity: .5;
-      padding: 28px 0 5px;
-    }
-
-    @media (max-width: 700px) {
-
-      .video-area,
-      .bottom-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .video-placeholder {
-        height: 220px;
-      }
-
-      header {
-        align-items: flex-start;
-        gap: 10px;
-        flex-direction: column;
-      }
-
-    }
-
-  </style>
+  .create-btn {
+    padding: 9px 13px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="page">
-
-<header>
-  <div class="logo">studytogether ♡</div>
-
-  <div class="room-controls">
-    <div class="room-name">psychology study room ✦</div>
-    <button onclick="createRoom()">create room ♡</button>
+<header class="top">
+  <div>
+    <div class="logo">study<span>together</span> ♡</div>
+    <div class="room-name">no room yet ✦</div>
   </div>
+
+  <button class="create-btn" onclick="createRoom()">
+    create room ♡
+  </button>
 </header>
 
-  <main>
+<main class="page">
 
-    <section class="video-area">
-<div class="video-card">
+  <div class="invite-box" id="inviteBox">
+    <div class="invite-title">your room is ready ♡</div>
+    <div class="invite-code" id="inviteCode"></div>
 
-  <video
-    id="localVideo"
-    autoplay
-    muted
-    playsinline
-  ></video>
+    <input
+      class="invite-link"
+      id="inviteLink"
+      readonly
+    >
 
-  <div class="name">you ♡</div>
-
-  <div class="video-controls">
-    <button onclick="toggleMic()">🎙️</button>
-    <button onclick="toggleCamera()">📷</button>
+    <button class="copy-btn" onclick="copyInvite()">
+      copy invite link ♡
+    </button>
   </div>
 
-</div>
+  <section class="video-area">
 
-    </section>
+    <div class="video-card">
 
-    <section class="timer-card">
+      <video
+        id="localVideo"
+        autoplay
+        muted
+        playsinline
+      ></video>
 
-      <div class="timer-label">✦ focus session ✦</div>
-
-      <div id="timer">25:00</div>
-
-      <div class="timer-mode">focus ♡</div>
-
-      <div class="timer-buttons">
-        <button onclick="startTimer()">start</button>
-        <button onclick="pauseTimer()">pause</button>
-        <button onclick="resetTimer()">reset</button>
+      <div class="name" id="localName">
+        you ♡
       </div>
 
-      <div class="presets">
-        <button onclick="setTimer(25)">25 min</button>
-        <button onclick="setTimer(50)">50 min</button>
-        <button onclick="setTimer(90)">90 min</button>
-        <button onclick="customizeTimer()">♡ customize</button>
+      <div class="video-controls">
+        <button onclick="toggleMic()" id="micBtn">🎙️</button>
+        <button onclick="toggleCamera()" id="cameraBtn">📷</button>
       </div>
 
-    </section>
+    </div>
 
-    <section class="bottom-grid">
+    <div class="video-card">
 
-      <div class="card goal-card">
+      <div class="video-placeholder" id="remotePlaceholder">
+        <span>✦</span>
+        <p id="remoteWaiting">waiting for your study buddy...</p>
+      </div>
 
-        <div class="card-title">🎀 my goal</div>
+      <video
+        id="remoteVideo"
+        autoplay
+        playsinline
+        style="display:none"
+      ></video>
 
-        <div class="goal">
+      <div class="name" id="remoteName">
+        your study buddy
+      </div>
 
-          <div class="goal-text">
-            Finish 30 pages of cognitive psychology
-          </div>
+    </div>
 
-          <button>edit ♡</button>
+  </section>
 
+  <div class="status" id="status">
+    ✦ create or join a room to begin ✦
+  </div>
+
+  <section class="timer-card">
+
+    <div class="timer-label">✦ focus session ✦</div>
+
+    <div id="timer">25:00</div>
+
+    <div class="timer-mode" id="timerMode">
+      focus ♡
+    </div>
+
+    <div class="timer-buttons">
+      <button onclick="startTimer()">start</button>
+      <button onclick="pauseTimer()">pause</button>
+      <button onclick="resetTimer()">reset</button>
+    </div>
+
+    <br>
+
+    <div class="presets">
+      <button onclick="setTimer(25)">25 min</button>
+      <button onclick="setTimer(50)">50 min</button>
+      <button onclick="setTimer(90)">90 min</button>
+      <button onclick="customizeTimer()">♡ customize</button>
+    </div>
+
+  </section>
+
+  <section class="bottom-grid">
+
+    <div class="card goal-card">
+
+      <div class="card-title">🎀 my goal</div>
+
+      <div class="goal">
+
+        <div class="goal-text" id="goalText">
+          Finish 30 pages of cognitive psychology
         </div>
 
-        <div class="goal-line"></div>
-
-        <div class="small-text">
-          one little step at a time ✦
-        </div>
+        <button onclick="editGoal()">edit ♡</button>
 
       </div>
 
-      <div class="card chat-card">
+      <div class="goal-line"></div>
 
-        <div class="card-title">💌 chat</div>
+      <div class="small-text">
+        one little step at a time ✦
+      </div>
 
-        <div class="messages">
-          <p><b>lena:</b> starting now ♡</p>
-          <p><b>you:</b> good luck!!</p>
-          <p><b>lena:</b> we got this ✦</p>
-        </div>
+    </div>
 
-        <div class="chat-input">
+    <div class="card chat-card">
 
-          <input placeholder="say something..." />
+      <div class="card-title">💌 chat</div>
 
-          <button>♡</button>
+      <div class="messages" id="messages"></div>
 
-        </div>
+      <div class="chat-input">
+
+        <input
+          id="chatInput"
+          placeholder="say something..."
+          onkeydown="if(event.key==='Enter') sendMessage()"
+        >
+
+        <button onclick="sendMessage()">♡</button>
 
       </div>
 
-    </section>
+    </div>
 
-  </main>
+  </section>
 
   <footer>
     study together, but separately ♡
   </footer>
 
-</div>
+</main>
 
 <script>
 
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://iiiozzkiguawjnfjwufm.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_M9cPuA11Q8-Fh0UAczdT-Q_OgAcMQBz";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   GLOBAL STATE
+   ========================================================= */
+
+let roomCode = null;
+let roomId = null;
+let myName = null;
+let isCreator = false;
+
+let channel = null;
+let localStream = null;
+let peerConnection = null;
+
+let micOn = true;
+let cameraOn = true;
+
+let timerInterval = null;
+let timerSeconds = 25 * 60;
 let focusMinutes = 25;
 let breakMinutes = 5;
+let timerRunning = false;
+let timerMode = "focus";
 
-let timeLeft = focusMinutes * 60;
-let timerInterval = null;
-let currentMode = "focus";
 
-function updateDisplay() {
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
+function showStatus(text) {
+  document.getElementById("status").textContent = text;
+}
 
+function formatTime(seconds) {
+
+  const minutes =
+    Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+
+  const secs =
+    (seconds % 60)
+      .toString()
+      .padStart(2, "0");
+
+  return `${minutes}:${secs}`;
+}
+
+function updateTimerDisplay() {
   document.getElementById("timer").textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-  document.querySelector(".timer-mode").textContent =
-    currentMode === "focus"
-      ? "focus ♡"
-      : "little break ✦";
+    formatTime(timerSeconds);
 }
 
-function startTimer() {
 
-  if (timerInterval) return;
+/* =========================================================
+   CAMERA
+   ========================================================= */
 
-  timerInterval = setInterval(() => {
+async function startCamera() {
 
-    if (timeLeft > 0) {
+  try {
 
-      timeLeft--;
-      updateDisplay();
+    localStream =
+      await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+      });
 
-      return;
-    }
+    document.getElementById("localVideo").srcObject =
+      localStream;
 
-    if (currentMode === "focus") {
+    showStatus("camera ready ♡");
 
-      currentMode = "break";
-      timeLeft = breakMinutes * 60;
+  } catch (error) {
 
-    } else {
+    console.error("Camera error:", error);
 
-      currentMode = "focus";
-      timeLeft = focusMinutes * 60;
-
-    }
-
-    updateDisplay();
-
-  }, 1000);
-}
-
-function pauseTimer() {
-
-  clearInterval(timerInterval);
-  timerInterval = null;
-
-}
-
-function resetTimer() {
-
-  pauseTimer();
-
-  currentMode = "focus";
-  timeLeft = focusMinutes * 60;
-
-  updateDisplay();
-
-}
-
-function setTimer(minutes) {
-
-  pauseTimer();
-
-  focusMinutes = minutes;
-  currentMode = "focus";
-  timeLeft = focusMinutes * 60;
-
-  updateDisplay();
-
-}
-
-function customizeTimer() {
-
-  const newFocus = prompt(
-    "How many minutes should the focus session be?"
-  );
-
-  if (newFocus === null || newFocus === "") return;
-
-  const newBreak = prompt(
-    "How many minutes should the break be?"
-  );
-
-  if (newBreak === null || newBreak === "") return;
-
-  const focus = Number(newFocus);
-  const breakTime = Number(newBreak);
-
-  if (
-    !Number.isFinite(focus) ||
-    !Number.isFinite(breakTime) ||
-    focus <= 0 ||
-    breakTime < 0
-  ) {
-
-    alert("Please enter valid numbers ♡");
-    return;
+    showStatus(
+      "camera permission is needed for video ♡"
+    );
 
   }
-
-  focusMinutes = focus;
-  breakMinutes = breakTime;
-
-  currentMode = "focus";
-  timeLeft = focusMinutes * 60;
-
-  updateDisplay();
-
 }
 
-updateDisplay();
+function toggleMic() {
+
+  if (!localStream) return;
+
+  const track =
+    localStream.getAudioTracks()[0];
+
+  if (!track) return;
+
+  micOn = !micOn;
+
+  track.enabled = micOn;
+
+  document.getElementById("micBtn").textContent =
+    micOn ? "🎙️" : "🔇";
+}
+
+function toggleCamera() {
+
+  if (!localStream) return;
+
+  const track =
+    localStream.getVideoTracks()[0];
+
+  if (!track) return;
+
+  cameraOn = !cameraOn;
+
+  track.enabled = cameraOn;
+
+  document.getElementById("cameraBtn").textContent =
+    cameraOn ? "📷" : "🚫";
+}
+
+
+/* =========================================================
+   CREATE ROOM
+   ========================================================= */
+
 async function createRoom() {
 
-  const name = prompt("What's your name? ♡");
+  const name =
+    prompt("What's your name? ♡");
 
-  if (!name || !name.trim()) {
-    return;
-  }
+  if (!name || !name.trim()) return;
 
-  const roomCode = Math.random()
-    .toString(36)
-    .substring(2, 8)
-    .toUpperCase();
+  const cleanName =
+    name.trim();
 
-  const { data: room, error: roomError } = await supabaseClient
-    .from("rooms")
-    .insert([
-      {
-        room_code: roomCode,
+  const generatedCode =
+    Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
+
+  const { data: room, error } =
+    await supabaseClient
+      .from("rooms")
+      .insert([{
+        room_code: generatedCode,
         focus_minutes: focusMinutes,
         break_minutes: breakMinutes,
         timer_mode: "focus",
         time_left: focusMinutes * 60
-      }
-    ])
-    .select()
-    .single();
+      }])
+      .select()
+      .single();
 
-  if (roomError) {
-    console.error(roomError);
-    alert("Something went wrong creating the room ♡");
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "Something went wrong creating the room ♡"
+    );
+
     return;
   }
 
-  const { error: participantError } = await supabaseClient
-    .from("participants")
-    .insert([
-      {
+  const { error: participantError } =
+    await supabaseClient
+      .from("participants")
+      .insert([{
         room_id: room.id,
-        name: name.trim()
-      }
-    ]);
+        name: cleanName
+      }]);
 
   if (participantError) {
     console.error(participantError);
-    alert("Room created, but we couldn't add you ♡");
-    return;
   }
+
+  roomCode = generatedCode;
+  roomId = room.id;
+  myName = cleanName;
+  isCreator = true;
+
+  sessionStorage.setItem(
+    "studyTogetherName",
+    cleanName
+  );
+
+  sessionStorage.setItem(
+    "studyTogetherRoom",
+    generatedCode
+  );
+
+  sessionStorage.setItem(
+    "studyTogetherCreator",
+    "true"
+  );
 
   const roomUrl =
     window.location.origin +
     window.location.pathname +
     "?room=" +
-    roomCode;
+    generatedCode;
 
   document.querySelector(".room-name").textContent =
-    `room ${roomCode} ✦`;
-sessionStorage.setItem("studyTogetherName", name.trim());
-sessionStorage.setItem("studyTogetherRoom", roomCode);
-const inviteLink = roomUrl;
+    `room ${generatedCode} ✦`;
 
-const copyLink = prompt(
-  `Your room is ready! ♡\n\nRoom code: ${roomCode}\n\nInvite link:\n${inviteLink}\n\nCopy the link below and send it to your friend:`,
-  inviteLink
-);
-    }
-  
-  async function joinRoomFromLink() {
+  document.getElementById("localName").textContent =
+    `${cleanName} ♡`;
 
-  const params = new URLSearchParams(window.location.search);
-  const roomCode = params.get("room");
+  document.getElementById("inviteCode").textContent =
+    generatedCode;
 
-  if (!roomCode) {
+  document.getElementById("inviteLink").value =
+    roomUrl;
+
+  document.getElementById("inviteBox")
+    .classList.add("visible");
+
+  history.replaceState(
+    {},
+    "",
+    "?room=" + generatedCode
+  );
+
+  await enterRoom();
+
+}
+
+
+/* =========================================================
+   JOIN ROOM
+   ========================================================= */
+
+async function joinRoomFromLink() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const code =
+    params.get("room");
+
+  if (!code) {
+
+    await startCamera();
+
     return;
   }
 
-  const { data: room, error } = await supabaseClient
-    .from("rooms")
-    .select("*")
-    .eq("room_code", roomCode.toUpperCase())
-    .single();
+  const upperCode =
+    code.toUpperCase();
+
+  const { data: room, error } =
+    await supabaseClient
+      .from("rooms")
+      .select("*")
+      .eq("room_code", upperCode)
+      .single();
 
   if (error || !room) {
-    alert("We couldn't find that study room ♡");
+
+    alert(
+      "We couldn't find that study room ♡"
+    );
+
     return;
   }
-const existingName = sessionStorage.getItem("studyTogetherName");
-const existingRoom = sessionStorage.getItem("studyTogetherRoom");
 
-if (existingName && existingRoom === roomCode.toUpperCase()) {
+  roomCode = upperCode;
+  roomId = room.id;
+
+  const savedName =
+    sessionStorage.getItem(
+      "studyTogetherName"
+    );
+
+  const savedRoom =
+    sessionStorage.getItem(
+      "studyTogetherRoom"
+    );
+
+  const savedCreator =
+    sessionStorage.getItem(
+      "studyTogetherCreator"
+    );
+
+  if (
+    savedName &&
+    savedRoom === upperCode &&
+    savedCreator === "true"
+  ) {
+
+    myName = savedName;
+    isCreator = true;
+
+  } else {
+
+    const name =
+      prompt(
+        "You've been invited to study together ♡\n\nWhat's your name?"
+      );
+
+    if (!name || !name.trim()) return;
+
+    myName = name.trim();
+    isCreator = false;
+
+    sessionStorage.setItem(
+      "studyTogetherName",
+      myName
+    );
+
+    sessionStorage.setItem(
+      "studyTogetherRoom",
+      upperCode
+    );
+
+    sessionStorage.removeItem(
+      "studyTogetherCreator"
+    );
+
+    const { error: joinError } =
+      await supabaseClient
+        .from("participants")
+        .insert([{
+          room_id: room.id,
+          name: myName
+        }]);
+
+    if (joinError) {
+      console.error(joinError);
+    }
+  }
+
   document.querySelector(".room-name").textContent =
-    `room ${room.room_code} ✦`;
+    `room ${upperCode} ✦`;
 
-  document.querySelector(".name").textContent =
-    `${existingName} ♡`;
+  document.getElementById("localName").textContent =
+    `${myName} ♡`;
 
-  return;
+  document.getElementById("inviteBox")
+    .classList.remove("visible");
+
+  await enterRoom();
 }
-  const name = prompt(
-    "You've been invited to study together ♡\n\nWhat's your name?"
-  );
 
-  if (!name || !name.trim()) {
-    return;
-  }
 
-  const { error: joinError } = await supabaseClient
-    .from("participants")
-    .insert([
+/* =========================================================
+   ENTER REALTIME ROOM
+   ========================================================= */
+
+async function enterRoom() {
+
+  await startCamera();
+
+  channel =
+    supabaseClient.channel(
+      "study-room-" + roomCode,
       {
-        room_id: room.id,
-        name: name.trim()
+        config: {
+          presence: {
+            key: myName
+          }
+        }
       }
-    ]);
+    );
 
-  if (joinError) {
-    console.error(joinError);
-    alert("We couldn't join the room ♡");
-    return;
-  }
+  channel
+    .on(
+      "presence",
+      { event: "sync" },
+      () => {
 
-  document.querySelector(".room-name").textContent =
-    `room ${room.room_code} ✦`;
+        const state =
+          channel.presenceState();
 
-  document.querySelector(".name").textContent =
-    `${name.trim()} ♡`;
+        const people =
+          Object.values(state)
+            .flat()
+            .filter(
+              person =>
+                person.name !== myName
+            );
 
-  alert(`Welcome to room ${room.room_code}, ${name.trim()} ♡`);
+        if (people.length > 0) {
+
+          const friend =
+            people[0];
+
+          document.getElementById(
+            "remoteName"
+          ).textContent =
+            `${friend.name} ♡`;
+
+          document.getElementById(
+            "remoteWaiting"
+          ).textContent =
+            `${friend.name} is here ♡`;
+
+          showStatus(
+            `${friend.name} joined your room ♡`
+          );
+
+        } else {
+
+          document.getElementById(
+            "remoteName"
+          ).textContent =
+            "your study buddy";
+
+          document.getElementById(
+            "remoteWaiting"
+          ).textContent =
+            "waiting for your study buddy...";
+
+          showStatus(
+            "waiting for your study buddy..."
+          );
+        }
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "ready" },
+      async () => {
+
+        if (isCreator) {
+          await createOffer();
+        }
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "offer" },
+      async ({ payload }) => {
+
+        if (isCreator) return;
+
+        await handleOffer(
+          payload.offer
+        );
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "answer" },
+      async ({ payload }) => {
+
+        if (!isCreator) return;
+
+        if (!peerConnection) return;
+
+        await peerConnection.setRemoteDescription(
+          new RTCSessionDescription(
+            payload.answer
+          )
+        );
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "ice" },
+      async ({ payload }) => {
+
+        if (!peerConnection) return;
+
+        try {
+
+          await peerConnection.addIceCandidate(
+            new RTCIceCandidate(
+              payload.candidate
+            )
+          );
+
+        } catch (error) {
+
+          console.error(
+            "ICE error:",
+            error
+          );
+        }
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "chat" },
+      ({ payload }) => {
+
+        addMessage(
+          payload.name,
+          payload.message
+        );
+      }
+    )
+
+    .on(
+      "broadcast",
+      { event: "timer" },
+      ({ payload }) => {
+
+        timerSeconds =
+          payload.seconds;
+
+        timerMode =
+          payload.mode;
+
+        timerRunning =
+          payload.running;
+
+        updateTimerDisplay();
+
+        document.getElementById(
+          "timerMode"
+        ).textContent =
+          timerMode === "focus"
+            ? "focus ♡"
+            : "break ✦";
+
+        if (timerRunning) {
+          startLocalTimer(false);
+        } else {
+          stopLocalTimer();
+        }
+      }
+    )
+
+    .subscribe(
+      async status => {
+
+        if (status !== "SUBSCRIBED")
+          return;
+
+        await channel.track({
+          name: myName
+        });
+
+        showStatus(
+          "you're in the room ♡"
+        );
+
+        if (!isCreator) {
+
+          await channel.send({
+            type: "broadcast",
+            event: "ready",
+            payload: {
+              name: myName
+            }
+          });
+        }
+      }
+    );
 }
 
-</script>
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+/* =========================================================
+   WEBRTC
+   ========================================================= */
 
-<script>
-  const SUPABASE_URL = "https://iiiozzkiguawjnfjwufm.supabase.co";
+function createPeerConnection() {
 
- const SUPABASE_KEY = "sb_publishable_M9cPuA11Q8-Fh0UAczdT-Q_OgAcMQBz";
-
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-  console.log("StudyTogether connected to Supabase ♡");
-  joinRoomFromLink();
-  let localStream;
-let micOn = true;
-let cameraOn = true;
-
-async function startCamera() {
-  try {
-    localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true
+  peerConnection =
+    new RTCPeerConnection({
+      iceServers: [
+        {
+          urls:
+            "stun:stun.l.google.com:19302"
+        },
+        {
+          urls:
+            "stun:stun1.l.google.com:19302"
+        }
+      ]
     });
 
-    document.getElementById("localVideo").srcObject = localStream;
+  if (localStream) {
 
-  } catch (error) {
-    console.error("Camera error:", error);
-    alert("We couldn't access your camera ♡ Please allow camera and microphone access.");
+    localStream
+      .getTracks()
+      .forEach(track => {
+
+        peerConnection.addTrack(
+          track,
+          localStream
+        );
+
+      });
+  }
+
+  peerConnection.ontrack =
+    event => {
+
+      const remoteVideo =
+        document.getElementById(
+          "remoteVideo"
+        );
+
+      remoteVideo.srcObject =
+        event.streams[0];
+
+      remoteVideo.style.display =
+        "block";
+
+      document.getElementById(
+        "remotePlaceholder"
+      ).style.display =
+        "none";
+
+      showStatus(
+        "you're studying together ♡"
+      );
+    };
+
+  peerConnection.onicecandidate =
+    async event => {
+
+      if (!event.candidate) return;
+
+      await channel.send({
+        type: "broadcast",
+        event: "ice",
+        payload: {
+          candidate:
+            event.candidate
+        }
+      });
+    };
+}
+
+
+async function createOffer() {
+
+  createPeerConnection();
+
+  const offer =
+    await peerConnection.createOffer();
+
+  await peerConnection.setLocalDescription(
+    offer
+  );
+
+  await channel.send({
+    type: "broadcast",
+    event: "offer",
+    payload: {
+      offer: offer
+    }
+  });
+}
+
+
+async function handleOffer(offer) {
+
+  createPeerConnection();
+
+  await peerConnection.setRemoteDescription(
+    new RTCSessionDescription(
+      offer
+    )
+  );
+
+  const answer =
+    await peerConnection.createAnswer();
+
+  await peerConnection.setLocalDescription(
+    answer
+  );
+
+  await channel.send({
+    type: "broadcast",
+    event: "answer",
+    payload: {
+      answer: answer
+    }
+  });
+}
+
+
+/* =========================================================
+   COPY INVITE
+   ========================================================= */
+
+async function copyInvite() {
+
+  const input =
+    document.getElementById(
+      "inviteLink"
+    );
+
+  try {
+
+    await navigator.clipboard.writeText(
+      input.value
+    );
+
+    const button =
+      document.querySelector(
+        ".copy-btn"
+      );
+
+    button.textContent =
+      "copied ♡";
+
+    setTimeout(() => {
+      button.textContent =
+        "copy invite link ♡";
+    }, 1800);
+
+  } catch {
+
+    input.select();
+    input.setSelectionRange(
+      0,
+      99999
+    );
+
+    document.execCommand("copy");
+
+    alert(
+      "Invite link copied ♡"
+    );
   }
 }
 
-function toggleMic() {
-  if (!localStream) return;
 
-  const audioTrack = localStream.getAudioTracks()[0];
+/* =========================================================
+   CHAT
+   ========================================================= */
 
-  if (audioTrack) {
-    micOn = !micOn;
-    audioTrack.enabled = micOn;
+function addMessage(
+  name,
+  message
+) {
+
+  const container =
+    document.getElementById(
+      "messages"
+    );
+
+  const p =
+    document.createElement("p");
+
+  const bold =
+    document.createElement("b");
+
+  bold.textContent =
+    name + ":";
+
+  p.appendChild(bold);
+
+  p.appendChild(
+    document.createTextNode(
+      " " + message
+    )
+  );
+
+  container.appendChild(p);
+
+  container.scrollTop =
+    container.scrollHeight;
+}
+
+
+async function sendMessage() {
+
+  const input =
+    document.getElementById(
+      "chatInput"
+    );
+
+  const message =
+    input.value.trim();
+
+  if (!message || !channel)
+    return;
+
+  addMessage(
+    myName,
+    message
+  );
+
+  await channel.send({
+    type: "broadcast",
+    event: "chat",
+    payload: {
+      name: myName,
+      message: message
+    }
+  });
+
+  input.value = "";
+}
+
+
+/* =========================================================
+   GOAL
+   ========================================================= */
+
+function editGoal() {
+
+  const current =
+    document.getElementById(
+      "goalText"
+    ).textContent;
+
+  const newGoal =
+    prompt(
+      "What's your goal? ♡",
+      current
+    );
+
+  if (!newGoal || !newGoal.trim())
+    return;
+
+  document.getElementById(
+    "goalText"
+  ).textContent =
+    newGoal.trim();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "goal",
+      payload: {
+        goal: newGoal.trim()
+      }
+    });
   }
 }
 
-function toggleCamera() {
-  if (!localStream) return;
 
-  const videoTrack = localStream.getVideoTracks()[0];
+/* =========================================================
+   TIMER
+   ========================================================= */
 
-  if (videoTrack) {
-    cameraOn = !cameraOn;
-    videoTrack.enabled = cameraOn;
+function updateTimerDisplay() {
+  document.getElementById("timer")
+    .textContent =
+    formatTime(timerSeconds);
+}
+
+
+function startLocalTimer(broadcast = true) {
+
+  if (timerRunning) return;
+
+  timerRunning = true;
+
+  timerInterval =
+    setInterval(() => {
+
+      if (timerSeconds > 0) {
+
+        timerSeconds--;
+
+        updateTimerDisplay();
+
+      } else {
+
+        switchTimerMode();
+
+      }
+
+    }, 1000);
+
+  if (broadcast && channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: true
+      }
+    });
   }
 }
+
+
+function stopLocalTimer() {
+
+  timerRunning = false;
+
+  clearInterval(
+    timerInterval
+  );
+
+  timerInterval = null;
+}
+
+
+function startTimer() {
+  startLocalTimer(true);
+}
+
+
+function pauseTimer() {
+
+  stopLocalTimer();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: false
+      }
+    });
+  }
+}
+
+
+function resetTimer() {
+
+  stopLocalTimer();
+
+  timerSeconds =
+    (timerMode === "focus"
+      ? focusMinutes
+      : breakMinutes) * 60;
+
+  updateTimerDisplay();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: false
+      }
+    });
+  }
+}
+
+
+function switchTimerMode() {
+
+  stopLocalTimer();
+
+  if (timerMode === "focus") {
+
+    timerMode = "break";
+
+    timerSeconds =
+      breakMinutes * 60;
+
+    document.getElementById(
+      "timerMode"
+    ).textContent =
+      "break ✦";
+
+  } else {
+
+    timerMode = "focus";
+
+    timerSeconds =
+      focusMinutes * 60;
+
+    document.getElementById(
+      "timerMode"
+    ).textContent =
+      "focus ♡";
+  }
+
+  updateTimerDisplay();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: false
+      }
+    });
+  }
+}
+
+
+function setTimer(minutes) {
+
+  focusMinutes =
+    Number(minutes);
+
+  timerMode =
+    "focus";
+
+  stopLocalTimer();
+
+  timerSeconds =
+    focusMinutes * 60;
+
+  document.getElementById(
+    "timerMode"
+  ).textContent =
+    "focus ♡";
+
+  updateTimerDisplay();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: false
+      }
+    });
+  }
+}
+
+
+function customizeTimer() {
+
+  const focus =
+    prompt(
+      "How many minutes should focus be? ♡",
+      focusMinutes
+    );
+
+  if (focus === null)
+    return;
+
+  const breakTime =
+    prompt(
+      "How many minutes should the break be? ✦",
+      breakMinutes
+    );
+
+  if (breakTime === null)
+    return;
+
+  const f =
+    Number(focus);
+
+  const b =
+    Number(breakTime);
+
+  if (
+    !Number.isFinite(f) ||
+    !Number.isFinite(b) ||
+    f <= 0 ||
+    b <= 0
+  ) {
+
+    alert(
+      "Please enter positive numbers ♡"
+    );
+
+    return;
+  }
+
+  focusMinutes = f;
+  breakMinutes = b;
+
+  timerMode = "focus";
+
+  stopLocalTimer();
+
+  timerSeconds =
+    focusMinutes * 60;
+
+  document.getElementById(
+    "timerMode"
+  ).textContent =
+    "focus ♡";
+
+  updateTimerDisplay();
+
+  if (channel) {
+
+    channel.send({
+      type: "broadcast",
+      event: "timer",
+      payload: {
+        seconds: timerSeconds,
+        mode: timerMode,
+        running: false
+      }
+    });
+  }
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+updateTimerDisplay();
 
 startCamera();
-  
+
+joinRoomFromLink();
+
 </script>
 
 </body>
 </html>
+```
